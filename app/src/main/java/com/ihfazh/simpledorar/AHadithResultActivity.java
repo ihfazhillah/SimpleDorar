@@ -21,6 +21,7 @@ import static java.lang.Thread.sleep;
 public class AHadithResultActivity extends AppCompatActivity {
 
     ArrayList<SimpleDorar> simpleDorars;
+    String skey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,14 @@ public class AHadithResultActivity extends AppCompatActivity {
 
         // get text
         Intent intent = getIntent();
-        String skey = intent.getStringExtra(MainActivity.SKEY);
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (Intent.ACTION_SEND.equals(action) && type != null){
+            skey = intent.getStringExtra(Intent.EXTRA_TEXT);
+        } else {
+            skey = intent.getStringExtra(MainActivity.SKEY);
+        }
+
         // set title
         setTitle(skey);
 
@@ -38,21 +46,5 @@ public class AHadithResultActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.ahadithList);
         new SimpleDorarTask(recyclerView, progressBar, this).execute(skey);
 
-//        // initialize
-//        try {
-//            simpleDorars = SimpleDorar.createSimpleDorar(20);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        // create adapter
-//        SimpleDorarAdapter simpleDorarAdapter = new SimpleDorarAdapter(simpleDorars);
-//        recyclerView.setAdapter(simpleDorarAdapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // send to service
-        // when service done
-        // hide the progress bar
-        // and show the result
-        // get results from internet
-//        progressBar.setVisibility(View.INVISIBLE);
     }
 }
