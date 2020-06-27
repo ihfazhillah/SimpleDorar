@@ -103,11 +103,6 @@ public class SimpleDorarTask extends AsyncTask<String, Void, ArrayList<SimpleDor
 
         }
 
-        System.out.println(
-
-                simpleDorars.size()
-        );
-
         return simpleDorars;
     }
 

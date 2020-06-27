@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">SimpleDorar</string>
-    <string name="search_key">بحت</string>
+    <string name="app_audio_search">SimpleDorarAudio</string>
+    <string name="search_key">بحث</string>
     <string name="placeholder">تحقق من صحة الحديث</string>
+    <string name="search_audio_btn">بحث صوتي</string>
     <!--
     result page
     -->
