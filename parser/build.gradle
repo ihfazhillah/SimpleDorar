@@ -1,0 +1,11 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.jsoup:jsoup:1.13.1'
+}
+
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
