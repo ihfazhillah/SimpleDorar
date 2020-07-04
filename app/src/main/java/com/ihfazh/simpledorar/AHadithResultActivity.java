@@ -47,4 +47,5 @@ public class AHadithResultActivity extends AppCompatActivity {
         new SimpleDorarTask(recyclerView, progressBar, this).execute(skey);
 
     }
+
 }

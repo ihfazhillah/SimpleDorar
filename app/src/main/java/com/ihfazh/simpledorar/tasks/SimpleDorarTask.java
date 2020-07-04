@@ -75,7 +75,9 @@ public class SimpleDorarTask extends AsyncTask<String, Void, ArrayList<SimpleDor
                     parsedDorar.getDorarHadithList()) {
 
                 if (dorarHadith.isHighlighted()){
-                    spannableStringBuilder.append(dorarHadith.getText(), new ForegroundColorSpan(Color.RED), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    int start = spannableStringBuilder.length();
+                    spannableStringBuilder.append(dorarHadith.getText());
+                    spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.RED), start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
                     spannableStringBuilder.append(dorarHadith.getText());
                 }
@@ -88,11 +90,15 @@ public class SimpleDorarTask extends AsyncTask<String, Void, ArrayList<SimpleDor
 
             for (DorarInfo dorarInfo :
                     parsedDorar.getDorarInfoList()) {
-                spannableStringBuilder.append(dorarInfo.getKey(), new RelativeSizeSpan(0.75f), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                int start;
+                start = spannableStringBuilder.length();
+                spannableStringBuilder.append(dorarInfo.getKey());
+                spannableStringBuilder.setSpan(new RelativeSizeSpan(0.75f), start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                int start = spannableStringBuilder.length();
+                start = spannableStringBuilder.length();
                 int end = start + dorarInfo.getValue().length();
-                spannableStringBuilder.append(dorarInfo.getValue(), new ForegroundColorSpan(Color.RED), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableStringBuilder.append(dorarInfo.getValue());
+                spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.RED), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannableStringBuilder.setSpan(new RelativeSizeSpan(0.75f), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannableStringBuilder.append("\n");
             }
@@ -102,6 +108,7 @@ public class SimpleDorarTask extends AsyncTask<String, Void, ArrayList<SimpleDor
             simpleDorars.add(simpleDorar);
 
         }
+        System.out.println("hello world");
 
         return simpleDorars;
     }

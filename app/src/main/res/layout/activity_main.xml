@@ -38,6 +38,7 @@
         android:onClick="onAudioSearchClick"
         android:text="@string/search_audio_btn"
         app:layout_constraintEnd_toStartOf="@+id/btn_search"
-        app:layout_constraintTop_toBottomOf="@+id/skey" />
+        app:layout_constraintTop_toBottomOf="@+id/skey"
+        android:layout_marginRight="9dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
