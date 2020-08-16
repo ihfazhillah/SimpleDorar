@@ -1,6 +1,8 @@
 package com.ihfazh.simpledorar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +47,12 @@ public class AHadithResultActivity extends AppCompatActivity {
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.ahadithList);
         new SimpleDorarTask(recyclerView, progressBar, this).execute(skey);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
     }
 

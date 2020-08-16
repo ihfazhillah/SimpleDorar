@@ -1,11 +1,18 @@
 package com.ihfazh.simpledorar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.app.SearchManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,10 +25,35 @@ public class MainActivity extends AppCompatActivity {
     public static final String SKEY = "com.ihfazh.simpledorar.skey";
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_search){
+            onSearchRequested();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+        Intent searchIntent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(searchIntent.getAction())){
+            String skey = searchIntent.getStringExtra(SearchManager.QUERY);
+            doSearch(skey);
+        }
+
     }
+
 
     public void onSearchClick(View view){
         TextInputEditText textInputEditText = (TextInputEditText) findViewById(R.id.skey);

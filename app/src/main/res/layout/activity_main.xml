@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <include
+        layout="@layout/toolbar"
+        android:background="#4CAF50" />
+
     <Button
         android:id="@+id/btn_search"
         android:layout_width="wrap_content"
