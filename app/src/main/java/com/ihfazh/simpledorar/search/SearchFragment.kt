@@ -1,60 +1,92 @@
 package com.ihfazh.simpledorar.search
 
 import android.os.Bundle
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ihfazh.simpledorar.R
+import com.ihfazh.simpledorar.databinding.FragmentSearchBinding
+import kotlinx.android.synthetic.main.view_search_history.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val viewModel: SearchViewModel by activityViewModels()
+    private lateinit var viewBinding : FragmentSearchBinding
+    private lateinit var searchQueryRVAdapter: SearchQueryRecyclerViewAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        searchQueryRVAdapter = SearchQueryRecyclerViewAdapter()
+
+        viewBinding.apply {
+            searchTextInput.doAfterTextChanged { textInput ->
+                viewModel.query.value = textInput?.toString()
+            }
+
+            searchHistory.searchHistory.searchHistoryRv.apply {
+                adapter = searchQueryRVAdapter
+                layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+            }
         }
+
+        viewModel.searchState.observe(viewLifecycleOwner){state ->
+            viewBinding.searchState = state
+            Log.d(TAG, "Current view State = $state")
+            toggleViewByState(state)
+        }
+
+        if (this::searchQueryRVAdapter.isInitialized){
+            viewModel.histories.observe(viewLifecycleOwner){
+                searchQueryRVAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun toggleViewByState(state: SearchState?) {
+        val views = listOf(
+            viewBinding.searchHistory
+        )
+
+        val viewMaps = mapOf(
+            SearchState.HasHistory to viewBinding.searchHistory
+        )
+
+        state?.let {
+            val view = viewMaps[it]
+            views.forEach { v ->
+                if (v == view){
+                    v.root.visibility = View.VISIBLE
+                } else {
+                    v.root.visibility = View.INVISIBLE
+                }
+
+            }
+        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        viewBinding = FragmentSearchBinding.inflate(inflater).apply {
+            vm = viewModel
+        }
+        return viewBinding.root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        private val TAG = SearchFragment::class.java.simpleName
     }
 }
