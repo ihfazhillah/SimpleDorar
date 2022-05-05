@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,19 @@ class SearchFragment : Fragment() {
         viewBinding.apply {
             searchTextInput.doAfterTextChanged { textInput ->
                 viewModel.query.value = textInput?.toString()
+            }
+            searchTextInput.setOnEditorActionListener { textView, actionId, keyEvent ->
+                // true means the text view focus persist
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    viewModel.search(viewModel.query.value!!)
+                    true
+                } else {
+                    false
+                }
+            }
+            searchContainer.setEndIconOnLongClickListener {
+                viewModel.searchState.value = SearchState.HasHistory
+                true
             }
 
             searchHistory.vm = viewModel

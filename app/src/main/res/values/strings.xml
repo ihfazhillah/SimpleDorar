@@ -22,4 +22,5 @@
     <string name="setting">Setting</string>
     <string name="last_search">Last Search</string>
     <string name="history_icon">History Icon</string>
+    <string name="go">Go</string>
 </resources>

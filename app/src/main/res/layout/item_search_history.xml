@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:chainUseRtl="true"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -42,7 +41,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_clear_all"
             app:layout_constraintEnd_toStartOf="@id/history_icon"
-            android:textAlignment="textEnd"
             tools:text="@string/last_search" />
 
         <com.google.android.material.button.MaterialButton

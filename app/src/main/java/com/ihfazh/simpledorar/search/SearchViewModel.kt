@@ -42,4 +42,14 @@ class SearchViewModel: ViewModel() {
             histories.postValue(remains)
         }
     }
+
+    fun search(value: String) {
+        viewModelScope.launch{
+            // for now just update the queries
+            val results = repo.appendQuery(value)
+            histories.postValue(results)
+            searchState.postValue(SearchState.HasHistory)
+        }
+
+    }
 }
