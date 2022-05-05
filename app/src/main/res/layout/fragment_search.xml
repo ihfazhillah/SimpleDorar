@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SearchFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".search.SearchFragment"
+    android:padding="14dp"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Search" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchContainer"
+        app:layout_constraintEnd_toStartOf="@id/btn_speak"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:endIconMode="clear_text"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:startIconDrawable="@drawable/ic_baseline_search_24"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/placeholder"
+            android:id="@+id/searchTextInput"
+            android:textDirection="anyRtl"
+            android:layoutDirection="rtl"
+            />
 
-</FrameLayout>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        app:icon="@drawable/ic_baseline_mic_24"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/btn_speak"
+        app:layout_constraintStart_toEndOf="@id/searchContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchContainer"
+        app:layout_constraintBottom_toBottomOf="@id/searchContainer"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.ihfazh.simpledorar.fragments
+package com.ihfazh.simpledorar.search
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
