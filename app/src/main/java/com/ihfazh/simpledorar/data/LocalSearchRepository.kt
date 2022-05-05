@@ -13,4 +13,13 @@ class LocalSearchRepository : SearchRepositoryInterface {
     override suspend fun getHistoriesWithLimit(start: Int, limit: Int): List<SearchQuery> {
         return queries
     }
+
+    override suspend fun deleteAllHistories() {
+        queries = listOf()
+    }
+
+    override suspend fun deleteHistory(id: Long): List<SearchQuery>{
+        queries = queries.filter { query -> query.id != id }
+        return queries
+    }
 }

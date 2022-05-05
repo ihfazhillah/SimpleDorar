@@ -22,12 +22,14 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchQueryRVAdapter = SearchQueryRecyclerViewAdapter()
+        searchQueryRVAdapter = SearchQueryRecyclerViewAdapter(viewModel)
 
         viewBinding.apply {
             searchTextInput.doAfterTextChanged { textInput ->
                 viewModel.query.value = textInput?.toString()
             }
+
+            searchHistory.vm = viewModel
 
             searchHistory.searchHistory.searchHistoryRv.apply {
                 adapter = searchQueryRVAdapter
