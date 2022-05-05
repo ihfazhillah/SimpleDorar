@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.FragmentSearchBinding
+import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.view_search_history.view.*
 
 class SearchFragment : Fragment() {
@@ -26,21 +27,19 @@ class SearchFragment : Fragment() {
         searchQueryRVAdapter = SearchQueryRecyclerViewAdapter(viewModel)
 
         viewBinding.apply {
-            searchTextInput.doAfterTextChanged { textInput ->
-                viewModel.query.value = textInput?.toString()
-            }
-            searchTextInput.setOnEditorActionListener { textView, actionId, keyEvent ->
+            lifecycleOwner = viewLifecycleOwner
+
+            searchTextInput.setOnEditorActionListener { _, actionId, _ ->
                 // true means the text view focus persist
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
-                    viewModel.search(viewModel.query.value!!)
+                    viewModel.search()
                     true
                 } else {
                     false
                 }
             }
-            searchContainer.setEndIconOnLongClickListener {
-                viewModel.searchState.value = SearchState.HasHistory
-                true
+            searchContainer.setEndIconOnClickListener {
+                viewModel.backToHistory()
             }
 
             searchHistory.vm = viewModel

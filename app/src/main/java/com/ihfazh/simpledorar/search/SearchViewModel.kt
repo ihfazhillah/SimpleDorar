@@ -1,6 +1,9 @@
 package com.ihfazh.simpledorar.search
 
 import android.util.Log
+import androidx.databinding.Bindable
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,13 +46,22 @@ class SearchViewModel: ViewModel() {
         }
     }
 
-    fun search(value: String) {
+    fun search() {
+        val value = query.value!!
+
         viewModelScope.launch{
             // for now just update the queries
             val results = repo.appendQuery(value)
             histories.postValue(results)
-            searchState.postValue(SearchState.HasHistory)
+            searchState.postValue(SearchState.SearchResult)
         }
 
     }
+
+    fun backToHistory() {
+        query.value = ""
+        searchState.value = SearchState.HasHistory
+    }
+
+
 }

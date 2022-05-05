@@ -41,6 +41,7 @@
                 android:hint="@string/placeholder"
                 android:id="@+id/searchTextInput"
                 android:textDirection="anyRtl"
+                android:text="@={vm.query}"
                 android:layoutDirection="rtl"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
