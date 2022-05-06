@@ -20,4 +20,16 @@ data class ResultItem(
     val highlights: List<ResultItemHighlight> = listOf()
 ): Parcelable {
     fun getExcerpt(): String = rawText.take(75) + if (rawText.length > 75) "..." else ""
+    fun getTextForClipboard(): String = """
+        $rawText
+        
+        الراوي: $rawi
+        محدث: $mohaddith
+        مصدر: $mashdar
+        صفحة / رقم: $shafha
+        خلاصة حكم الحديث: $hokm
+        
+        *SimpleDorar* | Powered by dorar.net API
+        https://play.google.com/store/apps/details?id=com.ihfazh.simpledorar
+    """.trimIndent()
 }

@@ -1,5 +1,8 @@
 package com.ihfazh.simpledorar.search
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -55,6 +58,13 @@ class SearchResultDetail : Fragment() {
         val binding = FragmentSearchResultDetailBinding.inflate(inflater).apply {
             resultItem = args.resultItem
             styledText = resultText
+            copy.setOnClickListener {
+                val label = args.resultItem.rawText
+                val text = args.resultItem.getTextForClipboard()
+                val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText(label, text)
+                clipboardManager.setPrimaryClip(clip)
+            }
         }
         return binding.root
     }
