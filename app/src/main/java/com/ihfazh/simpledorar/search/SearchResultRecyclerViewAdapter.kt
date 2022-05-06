@@ -1,12 +1,10 @@
 package com.ihfazh.simpledorar.search
 
-import android.app.appsearch.SearchResult
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ihfazh.simpledorar.databinding.ItemSearchHistoryBinding
 import com.ihfazh.simpledorar.databinding.ItemSearchResultBinding
 
 class SearchResultRecyclerViewAdapter(private val viewModel: SearchViewModel):

@@ -1,25 +1,17 @@
 package com.ihfazh.simpledorar.search
 
 import android.content.Context
-import android.inputmethodservice.InputMethodService
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewbinding.ViewBinding
-import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.FragmentSearchBinding
-import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.view_search_history.view.*
 
 class SearchFragment : Fragment() {

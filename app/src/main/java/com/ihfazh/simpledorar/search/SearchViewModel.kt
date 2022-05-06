@@ -1,9 +1,6 @@
 package com.ihfazh.simpledorar.search
 
 import android.util.Log
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

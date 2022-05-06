@@ -1,24 +1,17 @@
 package com.ihfazh.simpledorar;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.ProgressBar;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.ihfazh.simpledorar.adapters.SimpleDorarAdapter;
 import com.ihfazh.simpledorar.models.SimpleDorar;
-//import com.ihfazh.simpledorar.tasks.SimpleDorarTask;
 
 import java.util.ArrayList;
-
-import static java.lang.Thread.sleep;
 
 public class AHadithResultActivity extends AppCompatActivity {
 

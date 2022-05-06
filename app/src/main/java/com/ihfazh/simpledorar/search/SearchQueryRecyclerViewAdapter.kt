@@ -2,7 +2,6 @@ package com.ihfazh.simpledorar.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ihfazh.simpledorar.databinding.ItemSearchHistoryBinding

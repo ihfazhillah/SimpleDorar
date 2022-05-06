@@ -7,15 +7,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.buildSpannedString
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.FragmentSearchResultDetailBinding
 
 // TODO: Rename parameter arguments, choose names that match

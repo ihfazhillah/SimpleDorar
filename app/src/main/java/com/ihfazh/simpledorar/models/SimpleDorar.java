@@ -2,7 +2,6 @@ package com.ihfazh.simpledorar.models;
 
 import android.text.SpannableStringBuilder;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SimpleDorar {
