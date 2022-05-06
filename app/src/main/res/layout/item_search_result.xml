@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="8dp"
-            android:text="@{item.getExcerpt()}"
+            android:text="@{item.getExcerpt(75)}"
             app:layout_constraintBottom_toTopOf="@id/divider1"
             app:layout_constraintEnd_toStartOf="@id/history_icon"
             app:layout_constraintStart_toStartOf="parent"

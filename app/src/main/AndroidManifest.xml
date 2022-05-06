@@ -22,40 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity-->
-<!--            android:name=".AHadithResultActivity"-->
-<!--            android:parentActivityName=".MainActivity">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.PARENT_ACTIVITY"-->
-<!--                android:value=".MainActivity" />-->
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.SEND" />-->
-
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-
-<!--                <data android:mimeType="text/plain" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        <activity
-            android:name=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysVisible">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        -->
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

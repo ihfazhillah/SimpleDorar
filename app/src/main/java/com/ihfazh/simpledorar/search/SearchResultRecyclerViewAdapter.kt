@@ -65,7 +65,7 @@ class SearchResultRecyclerViewAdapter(private val viewModel: SearchViewModel):
         fun bind(resultItem: ResultItem) {
             binding.item = resultItem
             binding.root.setOnClickListener {
-                val destination = SearchResultDetailDirections.goToSearchResultDetail("", resultItem)
+                val destination = SearchResultDetailDirections.goToSearchResultDetail(resultItem.getExcerpt(8), resultItem)
                 it.findNavController().navigate(destination)
             }
         }

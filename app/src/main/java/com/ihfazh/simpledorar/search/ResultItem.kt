@@ -19,7 +19,7 @@ data class ResultItem(
     val hokm: String,
     val highlights: List<ResultItemHighlight> = listOf()
 ): Parcelable {
-    fun getExcerpt(): String = rawText.take(75) + if (rawText.length > 75) "..." else ""
+    fun getExcerpt(n: Int = 75): String = rawText.take(n) + if (rawText.length > n) "..." else ""
     fun getTextForClipboard(): String = """
         $rawText
         
