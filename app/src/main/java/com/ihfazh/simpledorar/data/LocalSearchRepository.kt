@@ -22,7 +22,7 @@ class LocalSearchRepository : SearchRepositoryInterface {
             "4390",
             "[صحيح]",
             listOf(
-                ResultItemHighlight(4, 22)
+                ResultItemHighlight(4, 27)
             )
         )
 

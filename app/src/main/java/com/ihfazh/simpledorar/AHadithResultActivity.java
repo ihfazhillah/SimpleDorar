@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.ihfazh.simpledorar.adapters.SimpleDorarAdapter;
 import com.ihfazh.simpledorar.models.SimpleDorar;
-import com.ihfazh.simpledorar.tasks.SimpleDorarTask;
+//import com.ihfazh.simpledorar.tasks.SimpleDorarTask;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,7 @@ public class AHadithResultActivity extends AppCompatActivity {
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.ahadithList);
-        new SimpleDorarTask(recyclerView, progressBar, this).execute(skey);
+//        new SimpleDorarTask(recyclerView, progressBar, this).execute(skey);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

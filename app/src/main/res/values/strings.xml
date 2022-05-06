@@ -20,8 +20,15 @@
     <string name="search">Search</string>
     <string name="history">History</string>
     <string name="setting">Setting</string>
-    <string name="last_search">Last Search</string>
+    <string name="last_search">مؤخرا</string>
     <string name="history_icon">History Icon</string>
     <string name="go">Go</string>
-    <string name="total_result">total results ( %1$s )</string>
+    <string name="total_result">النتائج ( %1$s )</string>
+    <string name="share">مشاركة</string>
+    <string name="copy">نسخ</string>
+    <string name="note">note</string>
+    <string name="rawi">الراوي</string>
+    <string name="mohdits">محدث</string>
+    <string name="khulashoh">خلاصة حكم الحديث</string>
+    <string name="save">حفظ</string>
 </resources>

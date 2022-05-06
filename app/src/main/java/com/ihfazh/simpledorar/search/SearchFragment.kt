@@ -54,7 +54,7 @@ class SearchFragment : Fragment() {
                 viewModel.search(query.query)
                 searchTextInput.requestFocus()
                 val IManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                IManager.showSoftInput(searchTextInput, InputMethodManager.SHOW_FORCED)
+                IManager.showSoftInput(searchTextInput, InputMethodManager.SHOW_IMPLICIT)
             }
             searchHistory.vm = viewModel
 

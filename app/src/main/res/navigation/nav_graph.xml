@@ -5,11 +5,28 @@
     app:startDestination="@id/searchFragment"
     android:id="@+id/nav_graph">
 
+    <action android:id="@+id/goToSearchResultDetail"
+        app:destination="@id/searchResultDetail"
+        >
+        <argument android:name="query" app:argType="string"/>
+        <argument android:name="resultItem" app:argType="com.ihfazh.simpledorar.search.ResultItem"/>
+    </action>
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.ihfazh.simpledorar.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/activity_main"
+        tools:layout="@layout/fragment_search"
         />
+
+    <fragment
+        android:id="@+id/searchResultDetail"
+        android:name="com.ihfazh.simpledorar.search.SearchResultDetail"
+        android:label="$query"
+        tools:layout="@layout/fragment_search_result_detail"
+        >
+        <argument android:name="query" app:argType="string"/>
+        <argument android:name="resultItem" app:argType="com.ihfazh.simpledorar.search.ResultItem"/>
+    </fragment>
 
 </navigation>
