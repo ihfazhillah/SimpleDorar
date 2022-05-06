@@ -1,6 +1,10 @@
 package com.ihfazh.simpledorar.search
 
+import android.content.Context
+import android.inputmethodservice.InputMethodService
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,9 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.FragmentSearchBinding
 import kotlinx.android.synthetic.main.fragment_search.view.*
@@ -20,11 +26,11 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by activityViewModels()
     private lateinit var viewBinding : FragmentSearchBinding
     private lateinit var searchQueryRVAdapter: SearchQueryRecyclerViewAdapter
+    private lateinit var searchResultRVAdapter: SearchResultRecyclerViewAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchQueryRVAdapter = SearchQueryRecyclerViewAdapter(viewModel)
 
         viewBinding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -42,10 +48,31 @@ class SearchFragment : Fragment() {
                 viewModel.backToHistory()
             }
 
+            // SEARCH HISTORY SECTION
+            searchQueryRVAdapter = SearchQueryRecyclerViewAdapter(viewModel)
+            searchQueryRVAdapter.onClickItem = { query ->
+                viewModel.search(query.query)
+                searchTextInput.requestFocus()
+                val IManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                IManager.showSoftInput(searchTextInput, InputMethodManager.SHOW_FORCED)
+            }
             searchHistory.vm = viewModel
 
             searchHistory.searchHistory.searchHistoryRv.apply {
                 adapter = searchQueryRVAdapter
+                layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+            }
+
+
+            // SEARCH RESULT SECTION
+            searchResultRVAdapter = SearchResultRecyclerViewAdapter(viewModel)
+            searchResults.vm = viewModel
+            searchResults.searchResultRv.apply {
+                adapter = searchResultRVAdapter
                 layoutManager = LinearLayoutManager(
                     requireContext(),
                     LinearLayoutManager.VERTICAL,
@@ -65,15 +92,23 @@ class SearchFragment : Fragment() {
                 searchQueryRVAdapter.submitList(it)
             }
         }
+
+        if (this::searchResultRVAdapter.isInitialized){
+            viewModel.searchResults.observe(viewLifecycleOwner){
+                searchResultRVAdapter.submitList(it)
+            }
+        }
     }
 
     private fun toggleViewByState(state: SearchState?) {
         val views = listOf(
-            viewBinding.searchHistory
+            viewBinding.searchHistory,
+            viewBinding.searchResults
         )
 
         val viewMaps = mapOf(
-            SearchState.HasHistory to viewBinding.searchHistory
+            SearchState.HasHistory to viewBinding.searchHistory,
+            SearchState.SearchResult to viewBinding.searchResults
         )
 
         state?.let {

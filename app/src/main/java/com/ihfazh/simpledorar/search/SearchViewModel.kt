@@ -17,6 +17,7 @@ class SearchViewModel: ViewModel() {
 
     val query = MutableLiveData("")
     val histories: MutableLiveData<List<SearchQuery>> = MutableLiveData(listOf())
+    val searchResults: MutableLiveData<List<ResultItem>> = MutableLiveData()
 
     init {
         viewModelScope.launch {
@@ -46,14 +47,30 @@ class SearchViewModel: ViewModel() {
         }
     }
 
-    fun search() {
-        val value = query.value!!
+    fun search(value: String? = null) {
+        val q = value ?: query.value!!
+        val isFromHistory = value != null
+
+        if (isFromHistory){
+            query.value = q
+        }
 
         viewModelScope.launch{
-            // for now just update the queries
-            val results = repo.appendQuery(value)
-            histories.postValue(results)
-            searchState.postValue(SearchState.SearchResult)
+            if (!isFromHistory){
+                val _histories = repo.appendQuery(q)
+                histories.postValue(_histories)
+            }
+
+            val results = repo.search(q, 0)
+            searchResults.postValue(results)
+
+            if (results.isEmpty()) {
+                searchState.postValue(SearchState.NoSearchResult)
+            } else {
+                Log.d(TAG, "search: $results ")
+                searchState.postValue(SearchState.SearchResult)
+            }
+
         }
 
     }
@@ -61,6 +78,10 @@ class SearchViewModel: ViewModel() {
     fun backToHistory() {
         query.value = ""
         searchState.value = SearchState.HasHistory
+    }
+
+    companion object {
+        private val TAG = SearchViewModel::class.java.simpleName
     }
 
 

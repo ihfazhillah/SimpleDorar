@@ -23,4 +23,5 @@
     <string name="last_search">Last Search</string>
     <string name="history_icon">History Icon</string>
     <string name="go">Go</string>
+    <string name="total_result">total results ( %1$s )</string>
 </resources>
