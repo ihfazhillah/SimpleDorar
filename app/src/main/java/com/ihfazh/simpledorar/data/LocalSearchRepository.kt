@@ -1,8 +1,10 @@
 package com.ihfazh.simpledorar.data
 
+import com.ihfazh.dorar.Dorar
 import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.ResultItemHighlight
 import com.ihfazh.simpledorar.search.SearchQuery
+import com.ihfazh.simpledorar.toResultItem
 import java.util.*
 
 class LocalSearchRepository : SearchRepositoryInterface {
@@ -49,6 +51,6 @@ class LocalSearchRepository : SearchRepositoryInterface {
     }
 
     override suspend fun search(query: String, page: Int): List<ResultItem> {
-        return resultItems
+        return Dorar().search(query, page).toResultItem()
     }
 }

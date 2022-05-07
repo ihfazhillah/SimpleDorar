@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ihfazh.simpledorar.data.LocalSearchRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SearchViewModel: ViewModel() {
@@ -52,13 +53,13 @@ class SearchViewModel: ViewModel() {
             query.value = q
         }
 
-        viewModelScope.launch{
+        viewModelScope.launch(Dispatchers.IO){
             if (!isFromHistory){
                 val _histories = repo.appendQuery(q)
                 histories.postValue(_histories)
             }
 
-            val results = repo.search(q, 0)
+            val results = repo.search(q, 1)
             searchResults.postValue(results)
 
             if (results.isEmpty()) {
