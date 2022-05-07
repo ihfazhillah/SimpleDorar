@@ -1,14 +1,20 @@
 package com.ihfazh.simpledorar.search
 
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ihfazh.simpledorar.data.DorarDatabase
 import com.ihfazh.simpledorar.data.LocalSearchRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SearchViewModel: ViewModel() {
-    private val repo = LocalSearchRepository()
+class SearchViewModel(application: Application): AndroidViewModel(application) {
+    private val db = DorarDatabase.getInstance(application.applicationContext)
+    private val repo = LocalSearchRepository(db)
 
     val searchState: MutableLiveData<SearchState> = MutableLiveData(SearchState.NoHistory)
 
@@ -21,29 +27,27 @@ class SearchViewModel: ViewModel() {
 
     init {
         viewModelScope.launch {
-            val historyItems = repo.getHistoriesWithLimit()
-            if (historyItems.isNotEmpty()){
-                searchState.postValue(SearchState.HasHistory)
+            repo.getHistoriesWithLimit().collect { historyItems ->
+                if (historyItems.isNotEmpty() and histories.value!!.isEmpty()){
+                    searchState.postValue(SearchState.HasHistory)
+                } else if (historyItems.isEmpty()) {
+                    searchState.postValue(SearchState.NoHistory)
+                }
+
+                histories.postValue(historyItems)
             }
-            histories.postValue(historyItems)
         }
     }
 
     fun deleteAllQueries(){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.deleteAllHistories()
-            histories.postValue(listOf())
-            searchState.postValue(SearchState.NoHistory)
         }
     }
 
     fun deleteQuery(id: Long){
-        viewModelScope.launch {
-            val remains = repo.deleteHistory(id)
-            if (remains.isEmpty()){
-                searchState.postValue(SearchState.NoHistory)
-            }
-            histories.postValue(remains)
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteHistory(id)
         }
     }
 
@@ -62,10 +66,7 @@ class SearchViewModel: ViewModel() {
         }
 
         viewModelScope.launch(Dispatchers.IO){
-            if (!isFromHistory){
-                val _histories = repo.appendQuery(q)
-                histories.postValue(_histories)
-            }
+            repo.appendQuery(q)
 
             val currentResults = searchResults.value
 
