@@ -10,6 +10,10 @@
         <variable
             name="styledText"
             type="android.text.SpannableString" />
+        <variable
+            name="vm"
+            type="com.ihfazh.simpledorar.search.SearchResultDetailViewModel"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

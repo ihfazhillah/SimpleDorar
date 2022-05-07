@@ -12,7 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import com.ihfazh.simpledorar.bookmark.BookmarkHadithBottomSheet
 import com.ihfazh.simpledorar.databinding.FragmentSearchResultDetailBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,6 +32,7 @@ class SearchResultDetail : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private val args: SearchResultDetailArgs by navArgs()
+    private val viewModel: SearchResultDetailViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +64,11 @@ class SearchResultDetail : Fragment() {
                 val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText(label, text)
                 clipboardManager.setPrimaryClip(clip)
+            }
+
+            mulahadzhoh.setOnClickListener {
+                val bottomSheet = BookmarkHadithBottomSheet(args.resultItem)
+                bottomSheet.show(parentFragmentManager, BookmarkHadithBottomSheet.TAG)
             }
         }
         return binding.root
