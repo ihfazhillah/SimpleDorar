@@ -1,4 +1,4 @@
-package com.ihfazh.simpledorar
+package com.ihfazh.simpledorar.utils
 
 import com.ihfazh.dorar.HadithItem
 import com.ihfazh.simpledorar.search.ResultItem

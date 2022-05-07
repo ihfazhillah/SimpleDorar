@@ -4,7 +4,7 @@ import com.ihfazh.dorar.Dorar
 import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.ResultItemHighlight
 import com.ihfazh.simpledorar.search.SearchQuery
-import com.ihfazh.simpledorar.toResultItem
+import com.ihfazh.simpledorar.utils.toResultItem
 import java.util.*
 
 class LocalSearchRepository : SearchRepositoryInterface {
