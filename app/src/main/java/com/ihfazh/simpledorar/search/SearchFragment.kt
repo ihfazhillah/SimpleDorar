@@ -1,13 +1,16 @@
 package com.ihfazh.simpledorar.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +22,16 @@ class SearchFragment : Fragment() {
     private lateinit var viewBinding : FragmentSearchBinding
     private lateinit var searchQueryRVAdapter: SearchQueryRecyclerViewAdapter
     private lateinit var searchResultRVAdapter: SearchResultRecyclerViewAdapter
+
+    private val speakContract = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){ result ->
+        val results = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+        if (!results.isNullOrEmpty()){
+            viewModel.query.value = results[0]
+            viewModel.search(forceNewRequest = true)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +51,15 @@ class SearchFragment : Fragment() {
             }
             searchContainer.setEndIconOnClickListener {
                 viewModel.backToHistory()
+            }
+
+            // Speech to text
+            btnSpeak.setOnClickListener {
+                val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ar-SA")
+                }
+                speakContract.launch(intent)
             }
 
             // SEARCH HISTORY SECTION

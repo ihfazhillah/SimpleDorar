@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return super.onCreateOptionsMenu(menu)
@@ -27,6 +29,9 @@ class MainActivity : AppCompatActivity() {
         myToolbar.setupWithNavController(
             navController = navController, appbarConfiguration
         )
+
+        val bottomToolbar = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomToolbar.setupWithNavController(navController)
     }
 
 //    fun onSearchClick(view: View?) {

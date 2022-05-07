@@ -29,4 +29,5 @@
         <argument android:name="resultItem" app:argType="com.ihfazh.simpledorar.search.ResultItem"/>
     </fragment>
 
+
 </navigation>

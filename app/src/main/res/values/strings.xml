@@ -31,8 +31,9 @@
     <string name="mohdits">محدث</string>
     <string name="khulashoh">خلاصة حكم الحديث</string>
     <string name="save">حفظ</string>
-    <string name="tambah">tambah</string>
+    <string name="tambah">المزيد...</string>
     <string name="search_category">Choose Category</string>
     <string name="ok">ok</string>
     <string name="autocomplete_not_found">Not found. Create \'%s\' ?</string>
+    <string name="bookmark">Bookmark</string>
 </resources>
