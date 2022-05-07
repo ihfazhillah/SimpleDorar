@@ -16,6 +16,8 @@ class SearchViewModel: ViewModel() {
     val query = MutableLiveData("")
     val histories: MutableLiveData<List<SearchQuery>> = MutableLiveData(listOf())
     val searchResults: MutableLiveData<List<ResultItem>> = MutableLiveData()
+    val isLoading = MutableLiveData(false)
+
     private val page = MutableLiveData(1)
 
     init {
@@ -47,6 +49,7 @@ class SearchViewModel: ViewModel() {
     }
 
     fun search(value: String? = null) {
+        isLoading.value = true
         val q = value ?: query.value!!
         val isFromHistory = value != null
 
@@ -66,12 +69,13 @@ class SearchViewModel: ViewModel() {
             val finalResults = if (currentResults.isNullOrEmpty()) results else currentResults + results
             searchResults.postValue(finalResults)
 
-            if (results.isEmpty()) {
+            if (finalResults.isEmpty()) {
                 searchState.postValue(SearchState.NoSearchResult)
             } else {
                 searchState.postValue(SearchState.SearchResult)
             }
 
+            isLoading.postValue(false)
         }
 
     }

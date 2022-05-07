@@ -10,6 +10,7 @@
         <variable
             name="searchState"
             type="com.ihfazh.simpledorar.search.SearchState" />
+        <import type="android.view.View"/>
 
     </data>
 
@@ -77,6 +78,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchContainer"
             android:layout_marginTop="8dp" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            android:id="@+id/progress"
+            android:indeterminate="true"
+            app:indeterminateAnimationType="contiguous"
+            app:indicatorColor="@array/progress_color"
+            android:visibility="@{vm.isLoading ? View.VISIBLE : View.GONE}"
+            />
 
         <include
             android:id="@+id/search_history"
