@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
             searchTextInput.setOnEditorActionListener { _, actionId, _ ->
                 // true means the text view focus persist
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
-                    viewModel.search()
+                    viewModel.search(forceNewRequest = true)
                     true
                 } else {
                     false

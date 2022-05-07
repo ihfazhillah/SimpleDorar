@@ -1,6 +1,5 @@
 package com.ihfazh.simpledorar.search
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -48,13 +47,18 @@ class SearchViewModel: ViewModel() {
         }
     }
 
-    fun search(value: String? = null) {
+    fun search(value: String? = null, forceNewRequest: Boolean = false) {
         isLoading.value = true
         val q = value ?: query.value!!
         val isFromHistory = value != null
 
         if (isFromHistory){
             query.value = q
+        }
+
+        if (forceNewRequest){
+            page.value = 1
+            searchResults.value = listOf()
         }
 
         viewModelScope.launch(Dispatchers.IO){
@@ -95,6 +99,7 @@ class SearchViewModel: ViewModel() {
     companion object {
         private val TAG = SearchViewModel::class.java.simpleName
     }
+
 
 
 }
