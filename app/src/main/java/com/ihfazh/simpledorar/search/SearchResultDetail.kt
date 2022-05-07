@@ -3,19 +3,32 @@ package com.ihfazh.simpledorar.search
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import coil.load
+import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.bookmark.BookmarkHadithBottomSheet
 import com.ihfazh.simpledorar.databinding.FragmentSearchResultDetailBinding
+import com.ihfazh.simpledorar.databinding.SampleDorarBinding
+import id.zelory.cekrek.config.CanvasSize
+import id.zelory.cekrek.config.CekrekConfig
+import id.zelory.cekrek.extension.cekrekToBitmap
+import id.zelory.cekrek.extension.cekrekToImageFile
+import java.io.File
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,7 +45,9 @@ class SearchResultDetail : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private val args: SearchResultDetailArgs by navArgs()
-    private val viewModel: SearchResultDetailViewModel by activityViewModels()
+
+    private lateinit var sampleView: SampleDorarBinding
+    private lateinit var binding: FragmentSearchResultDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +70,7 @@ class SearchResultDetail : Fragment() {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
-        val binding = FragmentSearchResultDetailBinding.inflate(inflater).apply {
+        binding = FragmentSearchResultDetailBinding.inflate(inflater).apply {
             resultItem = args.resultItem
             styledText = resultText
             copy.setOnClickListener {
@@ -70,8 +85,51 @@ class SearchResultDetail : Fragment() {
                 val bottomSheet = BookmarkHadithBottomSheet(args.resultItem)
                 bottomSheet.show(parentFragmentManager, BookmarkHadithBottomSheet.TAG)
             }
+
         }
+
+        sampleView = SampleDorarBinding.inflate(inflater).apply {
+            val resultItem = args.resultItem
+            this.resultText.text = resultItem.rawText
+            this.valueRawi.text = resultItem.rawi
+            this.valueHokm.text = resultItem.hokm
+            this.valueMohdits.text = resultItem.mohaddith
+            this.mashdar.text = resultItem.mashdar + " " + resultItem.shafha
+        }
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.share.setOnClickListener {
+            val config = CekrekConfig().apply {
+                canvasConfig.width = CanvasSize.Specific(1500)
+                canvasConfig.height = CanvasSize.WrapContent
+            }
+            val imageFile = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.let{
+                val file = File("${it.absolutePath}${File.separator}cekrek.jpg")
+                return@let sampleView.root.cekrekToImageFile(file){
+                    val canvasConfig = cekrekConfig.canvasConfig
+                    canvasConfig.width = CanvasSize.Specific(1500)
+                    canvasConfig.height = CanvasSize.WrapContent
+                }.also {
+                    Log.d("IMAGE SAVE", "onCreateView: ckerek image saved in $it")
+                }
+            }
+
+            if (imageFile != null){
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    val uri = FileProvider.getUriForFile(requireContext(), requireActivity().packageName + ".com.ihfazh.simpledorar", imageFile)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    type = "image/jpg"
+                }
+                startActivity(Intent.createChooser(intent, "Share Image"))
+            }
+
+        }
     }
 
     companion object {
