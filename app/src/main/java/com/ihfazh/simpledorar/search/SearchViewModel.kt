@@ -16,6 +16,7 @@ class SearchViewModel: ViewModel() {
     val query = MutableLiveData("")
     val histories: MutableLiveData<List<SearchQuery>> = MutableLiveData(listOf())
     val searchResults: MutableLiveData<List<ResultItem>> = MutableLiveData()
+    private val page = MutableLiveData(1)
 
     init {
         viewModelScope.launch {
@@ -59,13 +60,15 @@ class SearchViewModel: ViewModel() {
                 histories.postValue(_histories)
             }
 
-            val results = repo.search(q, 1)
-            searchResults.postValue(results)
+            val currentResults = searchResults.value
+
+            val results = repo.search(q, page.value!!)
+            val finalResults = if (currentResults.isNullOrEmpty()) results else currentResults + results
+            searchResults.postValue(finalResults)
 
             if (results.isEmpty()) {
                 searchState.postValue(SearchState.NoSearchResult)
             } else {
-                Log.d(TAG, "search: $results ")
                 searchState.postValue(SearchState.SearchResult)
             }
 
@@ -75,7 +78,14 @@ class SearchViewModel: ViewModel() {
 
     fun backToHistory() {
         query.value = ""
+        page.value = 1
+        searchResults.value = listOf()
         searchState.value = SearchState.HasHistory
+    }
+
+    fun searchNext() {
+        page.value = page.value!! + 1
+        search(query.value)
     }
 
     companion object {

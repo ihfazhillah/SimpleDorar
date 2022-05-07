@@ -71,6 +71,9 @@ class SearchFragment : Fragment() {
                     false
                 )
             }
+            searchResults.next.setOnClickListener {
+                viewModel.searchNext()
+            }
         }
 
         viewModel.searchState.observe(viewLifecycleOwner){state ->
