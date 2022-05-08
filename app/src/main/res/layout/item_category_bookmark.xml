@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="bookmark"
+            type="com.ihfazh.simpledorar.bookmark.listExapandable.BookmarkItemUI" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"
+            android:id="@+id/guideline1"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="88dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_end="56dp"
+            android:orientation="vertical"
+            android:id="@+id/guidline2"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="16sp"
+            tools:text="100"
+            android:text='@{bookmark.items.size + ""}'
+            android:background="@drawable/simple_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:id="@+id/count"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.6"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            android:textAppearance="?textAppearanceSubtitle1"
+            tools:text="@string/copy"
+            android:text="@{bookmark.bookmarkCategory.title}"
+            app:layout_constraintEnd_toStartOf="@id/guidline2"
+            app:layout_constraintTop_toTopOf="@id/count"
+            app:layout_constraintBottom_toBottomOf="@id/count"
+            app:layout_constraintStart_toEndOf="@id/guideline5"
+            android:layout_marginEnd="16dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:icon="@drawable/ic_baseline_edit_24"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="@id/count"
+            app:layout_constraintBottom_toBottomOf="@id/count"
+            style="@style/AppTheme.ButtonOnlyIcon"
+            android:id="@+id/editBtn"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:icon="@drawable/ic_baseline_open_in_new_24"
+            app:layout_constraintStart_toEndOf="@id/editBtn"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@id/count"
+            app:layout_constraintBottom_toBottomOf="@id/count"
+            style="@style/AppTheme.ButtonOnlyIcon"
+            />
+
+
+        <RelativeLayout
+            android:id="@+id/expanded_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guidline4"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/count"
+            android:visibility="gone"
+            app:visibilityCondition="@{bookmark.expand}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/childRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_category_hadith" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:visibilityCondition="@{bookmark.expand}"
+            app:layout_constraintBottom_toTopOf="@id/count"
+            android:layout_marginBottom="12dp"
+            android:background="?android:attr/listDivider" />
+
+        <View
+            android:visibility="gone"
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:visibilityCondition="@{bookmark.expand}"
+            app:layout_constraintTop_toBottomOf="@id/expanded_view"
+            android:layout_marginTop="12dp"
+            android:background="?android:attr/listDivider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

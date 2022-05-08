@@ -26,7 +26,7 @@ class SearchViewModel(application: Application): AndroidViewModel(application) {
     private val page = MutableLiveData(1)
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch (Dispatchers.IO){
             repo.getHistoriesWithLimit().collect { historyItems ->
                 if (historyItems.isNotEmpty() and histories.value!!.isEmpty()){
                     searchState.postValue(SearchState.HasHistory)

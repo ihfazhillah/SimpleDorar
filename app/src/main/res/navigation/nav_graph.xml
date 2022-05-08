@@ -29,5 +29,12 @@
         <argument android:name="resultItem" app:argType="com.ihfazh.simpledorar.search.ResultItem"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/bookmarkFragment"
+        android:name="com.ihfazh.simpledorar.bookmark.BookmarkListFragment"
+        android:label="@string/bookmark"
+        tools:layout="@layout/fragment_bookmark_list"
+        />
+
 
 </navigation>
