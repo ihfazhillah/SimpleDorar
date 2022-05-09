@@ -28,21 +28,16 @@
             android:layout_gravity="end"
             android:layout_marginRight="16dp" />
 
-        <com.google.android.material.button.MaterialButton
+        <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:icon="@drawable/ic_baseline_clear_all_24"
-            app:iconGravity="textStart"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:insetTop="0dp"
-            android:insetLeft="0dp"
-            app:iconPadding="0dp"
+            android:src="@drawable/ic_baseline_clear_all_24"
             android:id="@+id/btn_clear_all"
             app:layout_constraintTop_toTopOf="@id/last_search_title"
             app:layout_constraintBottom_toBottomOf="@id/last_search_title"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
+            style="@style/AppTheme.ButtonOnlyIcon"
             app:layout_constraintStart_toStartOf="parent"
             android:onClick="@{() -> vm.deleteAllQueries()}"
             />

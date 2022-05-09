@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.view_search_history.view.*
 
 class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by activityViewModels()
-    private lateinit var viewBinding : FragmentSearchBinding
+    private var viewBinding : FragmentSearchBinding? = null
     private lateinit var searchQueryRVAdapter: SearchQueryRecyclerViewAdapter
     private lateinit var searchResultRVAdapter: SearchResultRecyclerViewAdapter
 
@@ -37,7 +37,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewBinding.apply {
+        viewBinding?.apply {
             lifecycleOwner = viewLifecycleOwner
 
             searchTextInput.setOnEditorActionListener { _, actionId, _ ->
@@ -79,6 +79,8 @@ class SearchFragment : Fragment() {
                     LinearLayoutManager.VERTICAL,
                     false
                 )
+                setHasFixedSize(true)
+                setItemViewCacheSize(20)
             }
 
 
@@ -92,6 +94,8 @@ class SearchFragment : Fragment() {
                     LinearLayoutManager.VERTICAL,
                     false
                 )
+                setHasFixedSize(true)
+                setItemViewCacheSize(20)
             }
             searchResults.next.setOnClickListener {
                 viewModel.searchNext()
@@ -99,7 +103,7 @@ class SearchFragment : Fragment() {
         }
 
         viewModel.searchState.observe(viewLifecycleOwner){state ->
-            viewBinding.searchState = state
+            viewBinding?.searchState = state
             Log.d(TAG, "Current view State = $state")
             toggleViewByState(state)
         }
@@ -118,26 +122,29 @@ class SearchFragment : Fragment() {
     }
 
     private fun toggleViewByState(state: SearchState?) {
-        val views = listOf(
-            viewBinding.searchHistory,
-            viewBinding.searchResults
-        )
+        viewBinding?.let { binding ->
+            val views = listOf(
+                binding.searchHistory,
+                binding.searchResults
+            )
 
-        val viewMaps = mapOf(
-            SearchState.HasHistory to viewBinding.searchHistory,
-            SearchState.SearchResult to viewBinding.searchResults
-        )
+            val viewMaps = mapOf(
+                SearchState.HasHistory to binding.searchHistory,
+                SearchState.SearchResult to binding.searchResults
+            )
 
-        state?.let {
-            val view = viewMaps[it]
-            views.forEach { v ->
-                if (v == view){
-                    v.root.visibility = View.VISIBLE
-                } else {
-                    v.root.visibility = View.INVISIBLE
+            state?.let {
+                val view = viewMaps[it]
+                views.forEach { v ->
+                    if (v == view){
+                        v.root.visibility = View.VISIBLE
+                    } else {
+                        v.root.visibility = View.INVISIBLE
+                    }
+
                 }
-
             }
+
         }
 
     }
@@ -145,15 +152,20 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
         viewBinding = FragmentSearchBinding.inflate(inflater).apply {
             vm = viewModel
         }
-        return viewBinding.root
+        return viewBinding?.root
     }
 
     companion object {
         private val TAG = SearchFragment::class.java.simpleName
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewBinding = null
     }
 }

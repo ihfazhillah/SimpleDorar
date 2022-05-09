@@ -20,4 +20,10 @@ abstract class BookmarkDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun saveBookmark(hadithBookmark: HadithBookmarkEntity)
+
+    @Query("select * from bookmark_category")
+    abstract fun getCategoriesWithHadith(): Flow<List<BookmarkWithHadiths>>
+
+    @Query("select * from bookmark_category")
+    abstract fun getCategories(): Flow<List<BookmarkCategoryEntity>>
 }

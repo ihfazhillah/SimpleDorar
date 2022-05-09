@@ -44,10 +44,10 @@
             app:layout_constraintEnd_toStartOf="@id/history_icon"
             tools:text="@string/last_search" />
 
-        <com.google.android.material.button.MaterialButton
+        <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:icon="@drawable/ic_baseline_clear_24"
+            android:src="@drawable/ic_baseline_clear_24"
             style="@style/AppTheme.ButtonOnlyIcon"
             android:id="@+id/btn_clear_all"
             android:layout_marginStart="16dp"

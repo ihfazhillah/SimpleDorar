@@ -9,5 +9,5 @@ data class HadithBookmark(
     val mashdar: String,
     val shafha: String,
     val hokm: String,
-    val category: BookmarkCategory
+    val category: BookmarkCategory? = null
 )

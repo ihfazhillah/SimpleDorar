@@ -23,7 +23,7 @@ class SearchResultRecyclerViewAdapter(private val viewModel: SearchViewModel):
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding = ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context)).apply {
+        val binding = ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
         }
         return ViewHolder(binding)
     }

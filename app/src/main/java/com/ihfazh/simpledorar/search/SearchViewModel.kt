@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(application: Application): AndroidViewModel(application) {
     private val db = DorarDatabase.getInstance(application.applicationContext)
-    private val repo = LocalSearchRepository(db)
+    private val repo = LocalSearchRepository.getInstance(db)
 
     val searchState: MutableLiveData<SearchState> = MutableLiveData(SearchState.NoHistory)
 

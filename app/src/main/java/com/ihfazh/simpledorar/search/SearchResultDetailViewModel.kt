@@ -20,7 +20,7 @@ class SearchResultDetailViewModel(application: Application): AndroidViewModel(ap
 
     init {
         repo = DorarDatabase.getInstance(application.applicationContext).let{
-            LocalSearchRepository(it)
+            LocalSearchRepository.getInstance(it)
         }
 
     }

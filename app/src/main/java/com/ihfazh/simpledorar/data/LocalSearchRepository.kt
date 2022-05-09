@@ -2,22 +2,32 @@ package com.ihfazh.simpledorar.data
 
 import com.ihfazh.dorar.Dorar
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
+import com.ihfazh.simpledorar.bookmark.BookmarkCategoryWithHadith
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
+import com.ihfazh.simpledorar.bookmark.listExapandable.BookmarkItemUI
 import com.ihfazh.simpledorar.bookmark.models.BookmarkCategoryEntity
+import com.ihfazh.simpledorar.bookmark.models.BookmarkWithHadiths
 import com.ihfazh.simpledorar.bookmark.models.HadithBookmarkEntity
 import com.ihfazh.simpledorar.search.ResultItem
-import com.ihfazh.simpledorar.search.ResultItemHighlight
 import com.ihfazh.simpledorar.search.SearchQuery
 import com.ihfazh.simpledorar.utils.toResultItem
 import com.ihfazh.simpledorar.utils.toSearchQuery
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
-import java.util.*
 
 class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface {
     private val searchQueryDao = database.searchQueryDao()
     private val bookmarkDao = database.bookmarkDao()
+
+    companion object {
+        private var instance: LocalSearchRepository? = null
+        fun getInstance(db: DorarDatabase): LocalSearchRepository =
+            instance ?: synchronized(this){
+                instance ?: LocalSearchRepository(db).also{
+                    instance = it
+                }
+            }
+    }
 
     override suspend fun getHistoriesWithLimit(start: Int, limit: Int): Flow<List<SearchQuery>> {
         return searchQueryDao.getAll().toSearchQuery()
@@ -56,10 +66,33 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
     override fun searchCategorySync(constraint: CharSequence): List<BookmarkCategory> {
         return bookmarkDao.searchCategorySync("%$constraint%").toBookmarkCategory()
     }
+
+    override fun getCategoriesWithHadith(): Flow<List<BookmarkCategory>> {
+        return bookmarkDao.getCategories().toBookmarkCategory()
+    }
+}
+
+private fun Flow<List<BookmarkWithHadiths>>.toBookmarkItemUi(): Flow<List<BookmarkItemUI>> {
+    return map{ bookmarks ->
+        bookmarks.map {  bookmark ->
+            BookmarkItemUI(
+                BookmarkCategory(bookmark.bookmarkCategory.id, bookmark.bookmarkCategory.title),
+                items = bookmark.items.map { hadithEntity ->
+                    hadithEntity.toHadithBookmarkEntity()
+                }
+            )
+        }
+
+    }
+
+}
+
+private fun HadithBookmarkEntity.toHadithBookmarkEntity(): HadithBookmark {
+    return HadithBookmark(id, rawText, rawi, mohaddith, mashdar, shafha, hokm)
 }
 
 private fun HadithBookmark.toHadithBookmarkEntity(): HadithBookmarkEntity = HadithBookmarkEntity(
-    id, rawText, rawi, mohaddith, mashdar, shafha, hokm, category.id
+    id, rawText, rawi, mohaddith, mashdar, shafha, hokm, category?.id ?: 0L
 )
 
 

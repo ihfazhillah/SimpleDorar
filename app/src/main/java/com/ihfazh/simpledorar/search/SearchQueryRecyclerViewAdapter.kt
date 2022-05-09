@@ -24,7 +24,7 @@ class SearchQueryRecyclerViewAdapter(private val viewModel: SearchViewModel):
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding = ItemSearchHistoryBinding.inflate(LayoutInflater.from(parent.context)).apply {
+        val binding = ItemSearchHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
             vm = viewModel
         }
         return ViewHolder(binding)

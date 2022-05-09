@@ -46,8 +46,8 @@ class SearchResultDetail : Fragment() {
     private var param2: String? = null
     private val args: SearchResultDetailArgs by navArgs()
 
-    private lateinit var sampleView: SampleDorarBinding
-    private lateinit var binding: FragmentSearchResultDetailBinding
+    private var sampleView: SampleDorarBinding? = null
+    private  var binding: FragmentSearchResultDetailBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +60,7 @@ class SearchResultDetail : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         val resultText = SpannableString(args.resultItem.rawText)
         args.resultItem.highlights.forEach { highLight ->
             resultText.setSpan(
@@ -97,19 +97,15 @@ class SearchResultDetail : Fragment() {
             this.mashdar.text = resultItem.mashdar + " " + resultItem.shafha
         }
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.share.setOnClickListener {
-            val config = CekrekConfig().apply {
-                canvasConfig.width = CanvasSize.Specific(1500)
-                canvasConfig.height = CanvasSize.WrapContent
-            }
+        binding?.share?.setOnClickListener {
             val imageFile = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.let{
                 val file = File("${it.absolutePath}${File.separator}cekrek.jpg")
-                return@let sampleView.root.cekrekToImageFile(file){
+                return@let sampleView?.root?.cekrekToImageFile(file){
                     val canvasConfig = cekrekConfig.canvasConfig
                     canvasConfig.width = CanvasSize.Specific(1500)
                     canvasConfig.height = CanvasSize.WrapContent
@@ -150,5 +146,11 @@ class SearchResultDetail : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+        sampleView = null
     }
 }

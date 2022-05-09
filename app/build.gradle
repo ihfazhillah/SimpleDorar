@@ -77,6 +77,9 @@ dependencies {
     implementation "id.zelory:cekrek:1.0.0"
     implementation "io.coil-kt:coil:2.0.0-rc03"
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+
+
 
 
 }
@@ -84,6 +87,10 @@ dependencies {
 //configurations {
 //    compile.exclude group: "junit", module: "junit"
 //}
+
+configurations {
+    debugImplementation.exclude group: "junit", module: "junit"
+}
 
 configurations.all {
     resolutionStrategy.dependencySubstitution {

@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ihfazh.dorar.HadithItem
 import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.bookmark.listExapandable.BookmarkAdapter
@@ -26,7 +28,8 @@ class BookmarkListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var binding: FragmentBookmarkListBinding
+    private var binding: FragmentBookmarkListBinding? = null
+    private val viewModel: BookmarkListViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,61 +42,31 @@ class BookmarkListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentBookmarkListBinding.inflate(layoutInflater)
-        return binding.root
+        binding = FragmentBookmarkListBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply {
-            val items = listOf(
-                BookmarkItemUI(
-                    BookmarkCategory(1, "hello"),
-                    true,
-                    listOf(
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                    )
-                ),
-                BookmarkItemUI(
-                    BookmarkCategory(2, "hello"),
-                    true,
-                    listOf(
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                    )
-                ),
-                BookmarkItemUI(
-                    BookmarkCategory(3, getString(R.string.copy)),
-                    true,
-                    listOf(
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                    )
-                ),
-                BookmarkItemUI(
-                    BookmarkCategory(4, "hello"),
-                    true,
-                    listOf(
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                    )
-                ),
-                BookmarkItemUI(
-                    BookmarkCategory(5, "hello"),
-                    true,
-                    listOf(
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                        HadithBookmark(1, "ab", "cd", "e", "f", "g", "h", BookmarkCategory(1, "ab"),),
-                    )
-                ),
-            )
-            val adapter = BookmarkAdapter()
+        val sharedPoolRv = RecyclerView.RecycledViewPool()
+
+        val adapter = BookmarkAdapter().apply {
+//            onItemClick = {
+//                viewModel.updateBookmarkState(it.bookmarkCategory.id)
+//            }
+            sharedPool = sharedPoolRv
+        }
+        binding?.apply {
             bookmarkList.adapter = adapter
             bookmarkList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter.submitList(items)
+            bookmarkList.setHasFixedSize(true)
+            bookmarkList.setItemViewCacheSize(20)
+        }
+
+        viewModel.bookmarks.observe(viewLifecycleOwner){
+            adapter.submitList(it)
         }
     }
 
@@ -115,5 +88,10 @@ class BookmarkListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }

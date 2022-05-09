@@ -20,19 +20,19 @@ import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.SearchResultDetailViewModel
 
 class BookmarkHadithBottomSheet(private val item: ResultItem): BottomSheetDialogFragment() {
-    lateinit var binding: BottomSheetBookmarkHadithBinding
+    private var binding: BottomSheetBookmarkHadithBinding? = null
     private val viewModel: SearchResultDetailViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         binding = BottomSheetBookmarkHadithBinding.inflate(inflater).apply {
             vm = viewModel
             lifecycleOwner = viewLifecycleOwner
             val repository = DorarDatabase.getInstance(requireContext()).let { db ->
-                LocalSearchRepository(db)
+                LocalSearchRepository.getInstance(db)
             }
             val adapter = BookmarkCategoryCompleteAdapter(requireContext(),  repository)
             categoryInput.setAdapter(adapter)
@@ -49,10 +49,15 @@ class BookmarkHadithBottomSheet(private val item: ResultItem): BottomSheetDialog
                 requireParentFragment().findNavController().navigateUp()
             }
         }
-        return binding.root
+        return binding?.root
     }
 
     companion object {
         val TAG: String = BookmarkHadithBottomSheet::class.java.simpleName
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }
