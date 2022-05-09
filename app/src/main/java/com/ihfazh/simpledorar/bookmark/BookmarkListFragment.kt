@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavAction
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ihfazh.dorar.HadithItem
-import com.ihfazh.simpledorar.R
-import com.ihfazh.simpledorar.bookmark.listExapandable.BookmarkAdapter
-import com.ihfazh.simpledorar.bookmark.listExapandable.BookmarkItemUI
+import com.ihfazh.simpledorar.NavGraphDirections
 import com.ihfazh.simpledorar.databinding.FragmentBookmarkListBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,9 +55,13 @@ class BookmarkListFragment : Fragment() {
         val sharedPoolRv = RecyclerView.RecycledViewPool()
 
         val adapter = BookmarkAdapter().apply {
-//            onItemClick = {
-//                viewModel.updateBookmarkState(it.bookmarkCategory.id)
-//            }
+            onItemClick = { it, view ->
+                val action = NavGraphDirections.goToBookmarkDetail(it.title, it.id)
+                val extras =  FragmentNavigatorExtras(
+                    view to "test" + it.id.toString()
+                )
+                findNavController().navigate(action, extras)
+            }
             sharedPool = sharedPoolRv
         }
         binding?.apply {

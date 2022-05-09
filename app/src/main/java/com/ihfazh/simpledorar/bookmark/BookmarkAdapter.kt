@@ -1,20 +1,16 @@
-package com.ihfazh.simpledorar.bookmark.listExapandable
+package com.ihfazh.simpledorar.bookmark
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ihfazh.simpledorar.R
-import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.databinding.ItemCategoryBookmarkBinding
 
 class BookmarkAdapter: RecyclerView.Adapter<BookmarkAdapter.ViewHolder>(){
 
     private val items = mutableListOf<BookmarkCategory>()
-    var onItemClick: (BookmarkItemUI) -> Unit = {}
+    var onItemClick: (BookmarkCategory, View) -> Unit = {_, _ ->}
     var sharedPool: RecyclerView.RecycledViewPool? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +27,8 @@ class BookmarkAdapter: RecyclerView.Adapter<BookmarkAdapter.ViewHolder>(){
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         items[position].let{ item ->
             holder.bind(item)
-//            holder.binding.root.setOnClickListener { onItemClick(item) }
+            holder.binding.root.setOnClickListener { onItemClick(item, holder.binding.title) }
+            holder.binding.title.transitionName = "test" + item.id.toString()
         }
     }
 

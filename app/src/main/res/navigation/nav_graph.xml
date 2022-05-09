@@ -12,6 +12,13 @@
         <argument android:name="resultItem" app:argType="com.ihfazh.simpledorar.search.ResultItem"/>
     </action>
 
+    <action android:id="@+id/goToBookmarkDetail"
+        app:destination="@id/bookmarkHadithDetailFragment"
+        >
+        <argument android:name="title" app:argType="string"/>
+        <argument android:name="id" app:argType="long"/>
+    </action>
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.ihfazh.simpledorar.search.SearchFragment"
@@ -35,6 +42,17 @@
         android:label="@string/bookmark"
         tools:layout="@layout/fragment_bookmark_list"
         />
+
+    <fragment
+        android:id="@+id/bookmarkHadithDetailFragment"
+        android:name="com.ihfazh.simpledorar.bookmark.BookmarkDetailFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_bookmark_detail"
+        >
+        <argument android:name="title" app:argType="string"/>
+        <argument android:name="id" app:argType="long"/>
+
+    </fragment>
 
 
 </navigation>

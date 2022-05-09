@@ -2,9 +2,8 @@ package com.ihfazh.simpledorar.data
 
 import com.ihfazh.dorar.Dorar
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
-import com.ihfazh.simpledorar.bookmark.BookmarkCategoryWithHadith
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
-import com.ihfazh.simpledorar.bookmark.listExapandable.BookmarkItemUI
+import com.ihfazh.simpledorar.bookmark.HadithBookmarkUI
 import com.ihfazh.simpledorar.bookmark.models.BookmarkCategoryEntity
 import com.ihfazh.simpledorar.bookmark.models.BookmarkWithHadiths
 import com.ihfazh.simpledorar.bookmark.models.HadithBookmarkEntity
@@ -70,17 +69,25 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
     override fun getCategoriesWithHadith(): Flow<List<BookmarkCategory>> {
         return bookmarkDao.getCategories().toBookmarkCategory()
     }
+
+    override fun categoryHadithList(id: Long): Flow<List<HadithBookmarkUI>> {
+        return bookmarkDao.getHadithList(id).toHadithBookmarkList()
+    }
 }
 
-private fun Flow<List<BookmarkWithHadiths>>.toBookmarkItemUi(): Flow<List<BookmarkItemUI>> {
-    return map{ bookmarks ->
-        bookmarks.map {  bookmark ->
-            BookmarkItemUI(
-                BookmarkCategory(bookmark.bookmarkCategory.id, bookmark.bookmarkCategory.title),
-                items = bookmark.items.map { hadithEntity ->
-                    hadithEntity.toHadithBookmarkEntity()
-                }
-            )
+private fun Flow<List<HadithBookmarkEntity>>.toHadithBookmarkList(): Flow<List<HadithBookmarkUI>> {
+    return map {  bookmarks ->
+        bookmarks.map{ entity ->
+            val hadithBookmark = HadithBookmark(
+                    entity.id,
+                    entity.rawText,
+                    entity.rawi,
+                    entity.mohaddith,
+                    entity.mashdar,
+                    entity.shafha,
+                    entity.hokm,
+                )
+            HadithBookmarkUI(hadithBookmark)
         }
 
     }

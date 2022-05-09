@@ -26,4 +26,10 @@ abstract class BookmarkDao {
 
     @Query("select * from bookmark_category")
     abstract fun getCategories(): Flow<List<BookmarkCategoryEntity>>
+
+    @Query("""
+        select * from hadith_bookmark
+        where categoryId = :id
+    """)
+    abstract fun getHadithList(id: Long): Flow<List<HadithBookmarkEntity>>
 }

@@ -2,17 +2,10 @@ package com.ihfazh.simpledorar.bookmark
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.ihfazh.simpledorar.bookmark.listExapandable.BookmarkItemUI
 import com.ihfazh.simpledorar.data.DorarDatabase
 import com.ihfazh.simpledorar.data.LocalSearchRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlin.math.exp
 
 class BookmarkListViewModel(application: Application): AndroidViewModel(application) {
     private val bookmarksState = mutableMapOf<Long, Boolean>()
