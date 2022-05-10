@@ -63,6 +63,7 @@ class BookmarkListFragment : Fragment() {
                 findNavController().navigate(action, extras)
             }
             sharedPool = sharedPoolRv
+            onDeleteClick = { viewModel.delete(it) }
         }
         binding?.apply {
             bookmarkList.adapter = adapter

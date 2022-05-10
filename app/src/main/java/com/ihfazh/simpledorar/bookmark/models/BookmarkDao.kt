@@ -1,9 +1,6 @@
 package com.ihfazh.simpledorar.bookmark.models
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,6 +17,12 @@ abstract class BookmarkDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun saveBookmark(hadithBookmark: HadithBookmarkEntity)
+
+    @Update
+    abstract suspend fun updateCategory(bookmarkCategoryEntity: BookmarkCategoryEntity)
+
+    @Delete
+    abstract suspend fun deleteCategory(bookmarkCategoryEntity: BookmarkCategoryEntity)
 
     @Query("select * from bookmark_category")
     abstract fun getCategoriesWithHadith(): Flow<List<BookmarkWithHadiths>>

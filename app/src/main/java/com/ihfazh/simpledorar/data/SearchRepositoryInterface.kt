@@ -14,10 +14,13 @@ interface SearchRepositoryInterface {
     suspend fun appendQuery(value: String): Flow<List<SearchQuery>>
     suspend fun search(query: String, page: Int = 0): List<ResultItem>
 
+    // BOOKMARK feature
     suspend fun searchCategory(text: String): Flow<List<BookmarkCategory>>
     suspend fun inputCategory(text: String): Long
     suspend fun saveHadith(hadithBookmark: HadithBookmark)
     fun searchCategorySync(constraint: CharSequence): List<BookmarkCategory>
     fun getCategoriesWithHadith(): Flow<List<BookmarkCategory>>
     fun categoryHadithList(id: Long): Flow<List<HadithBookmarkUI>>
+    suspend fun updateBookmark(category: BookmarkCategory)
+    suspend fun deleteBookmark(category: BookmarkCategory)
 }

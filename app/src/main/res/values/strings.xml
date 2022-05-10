@@ -37,4 +37,8 @@
     <string name="autocomplete_not_found">Not found. Create \'%s\' ?</string>
     <string name="bookmark">Bookmark</string>
     <string name="reference_text">%1$s, %2$s %3$s from %4$s</string>
+    <string name="update">update</string>
+    <string name="delete">delete</string>
+    <string name="delete_confirmation">Are you sure to delete this %s?</string>
+    <string name="no">no</string>
 </resources>

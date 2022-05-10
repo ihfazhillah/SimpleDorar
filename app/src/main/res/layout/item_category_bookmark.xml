@@ -25,7 +25,7 @@
             tools:text="ini adalah title yang sangat panjang, harusnya bisa constrained dan hilang dari peredaran"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_edit"
+            app:layout_constraintEnd_toStartOf="@id/btn_more"
             android:maxLines="1"
             android:layout_marginTop="12dp"
             android:ellipsize="end"
@@ -48,7 +48,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
-            android:id="@+id/btn_edit"
+            android:id="@+id/btn_more"
             />
 
 

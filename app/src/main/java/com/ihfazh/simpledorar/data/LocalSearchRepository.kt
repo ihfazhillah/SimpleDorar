@@ -73,7 +73,23 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
     override fun categoryHadithList(id: Long): Flow<List<HadithBookmarkUI>> {
         return bookmarkDao.getHadithList(id).toHadithBookmarkList()
     }
+
+    override suspend fun updateBookmark(category: BookmarkCategory) {
+        category.toBookmarkCategoryEntity().let { category ->
+            bookmarkDao.updateCategory(category)
+        }
+    }
+
+    override suspend fun deleteBookmark(category: BookmarkCategory) {
+        category.toBookmarkCategoryEntity().let { category ->
+            bookmarkDao.deleteCategory(category)
+        }
+    }
 }
+
+private fun BookmarkCategory.toBookmarkCategoryEntity(): BookmarkCategoryEntity  =
+    BookmarkCategoryEntity(id, title)
+
 
 private fun Flow<List<HadithBookmarkEntity>>.toHadithBookmarkList(): Flow<List<HadithBookmarkUI>> {
     return map {  bookmarks ->
