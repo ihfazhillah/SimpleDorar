@@ -41,4 +41,5 @@
     <string name="delete">delete</string>
     <string name="delete_confirmation">Are you sure to delete this %s?</string>
     <string name="no">no</string>
+    <string name="change_category">change category</string>
 </resources>

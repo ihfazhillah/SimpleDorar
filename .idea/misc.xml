@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/activity_new_main.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/layout/autocomplete_list_item.xml" value="1.1497093023255813" />
+        <entry key="app/src/main/res/layout/bottom_sheet_bookmark_category_form.xml" value="0.5" />
         <entry key="app/src/main/res/layout/bottom_sheet_bookmark_hadith.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_bookmark_detail.xml" value="0.34791666666666665" />
         <entry key="app/src/main/res/layout/fragment_bookmark_list.xml" value="0.34791666666666665" />

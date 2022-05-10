@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 
 class BookmarkListViewModel(application: Application): AndroidViewModel(application) {
 
-    private val bookmarksState = mutableMapOf<Long, Boolean>()
     private val repo = LocalSearchRepository.getInstance(DorarDatabase.getInstance(application.applicationContext))
     val bookmarks = repo.getCategoriesWithHadith().asLiveData(Dispatchers.IO)
 
@@ -21,25 +20,10 @@ class BookmarkListViewModel(application: Application): AndroidViewModel(applicat
         }
     }
 
-//    init {
-//        repo.getCategoriesWithHadith()
-//    }
+    fun update(bookmarkCategory: BookmarkCategory){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.updateBookmark(bookmarkCategory)
+        }
+    }
 
-//    fun updateBookmarkState(id: Long){
-//        // cheating maybe??
-//        // update state
-//        val currentState = bookmarksState.getOrDefault(id, false)
-//        val nextState = !currentState
-//        bookmarksState[id] = nextState
-//
-//        // update bookmarks
-//        val currentBookmarks = bookmarks.value!!.map{
-//            if (it.bookmarkCategory.id == id){
-//                it.copy(expand = nextState)
-//            } else {
-//                it
-//            }
-//        }
-//        bookmarks.value = currentBookmarks
-//    }
 }

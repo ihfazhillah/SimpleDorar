@@ -82,7 +82,8 @@ class BookmarkAdapter: RecyclerView.Adapter<BookmarkAdapter.ViewHolder>(){
                               true
                            }
                            R.id.update -> {
-                               false
+                               onUpdateClick(bookmarkCategory)
+                               true
                            }
                            else -> false
                        }

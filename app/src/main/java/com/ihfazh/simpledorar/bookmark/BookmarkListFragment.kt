@@ -64,6 +64,11 @@ class BookmarkListFragment : Fragment() {
             }
             sharedPool = sharedPoolRv
             onDeleteClick = { viewModel.delete(it) }
+            onUpdateClick = { bookmarkCategory ->
+                val bottomSheet = BookmarkHadithFromBottomSheet(bookmarkCategory)
+                bottomSheet.show(parentFragmentManager, BookmarkHadithFromBottomSheet.TAG)
+
+            }
         }
         binding?.apply {
             bookmarkList.adapter = adapter
