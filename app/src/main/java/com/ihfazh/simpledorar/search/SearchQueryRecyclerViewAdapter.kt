@@ -70,4 +70,9 @@ class SearchQueryRecyclerViewAdapter(private val viewModel: SearchViewModel):
         }
 
     }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        onClickItem = {}
+        super.onDetachedFromRecyclerView(recyclerView)
+    }
 }
