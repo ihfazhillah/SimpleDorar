@@ -35,4 +35,7 @@ abstract class BookmarkDao {
         where categoryId = :id
     """)
     abstract fun getHadithList(id: Long): Flow<List<HadithBookmarkEntity>>
+
+    @Delete
+    abstract suspend fun deleteHadith(toHadithBookmarkEntity: HadithBookmarkEntity)
 }

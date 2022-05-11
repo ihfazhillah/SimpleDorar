@@ -62,6 +62,10 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         bookmarkDao.saveBookmark(hadithBookmark.toHadithBookmarkEntity())
     }
 
+    override suspend fun deleteBookmarkHadith(hadithBookmark: HadithBookmark) {
+        return bookmarkDao.deleteHadith(hadithBookmark.toHadithBookmarkEntity())
+    }
+
     override fun searchCategorySync(constraint: CharSequence): List<BookmarkCategory> {
         return bookmarkDao.searchCategorySync("%$constraint%").toBookmarkCategory()
     }

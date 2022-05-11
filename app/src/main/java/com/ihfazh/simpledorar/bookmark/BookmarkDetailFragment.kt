@@ -30,7 +30,11 @@ class BookmarkDetailFragment : Fragment() {
     private var binding : FragmentBookmarkDetailBinding? = null
     private val viewModel by activityViewModels<BookmarkDetailViewModel>()
     private val args by navArgs<BookmarkDetailFragmentArgs>()
-    private val hadithAdapter  = HadithAdapter()
+    private val hadithAdapter  = HadithAdapter().apply {
+        onRemoveClick = {
+            viewModel.deleteHadith(it)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

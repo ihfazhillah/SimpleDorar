@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.ihfazh.simpledorar.data.DorarDatabase
 import com.ihfazh.simpledorar.data.LocalSearchRepository
 import com.ihfazh.simpledorar.search.ResultItem
@@ -13,18 +14,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 class BookmarkDetailViewModel(application: Application): AndroidViewModel(application) {
     private val repo by lazy {
         LocalSearchRepository.getInstance(DorarDatabase.getInstance(application.applicationContext))
     }
 
-//    private var bookmarkId : Long? = null
-//    fun setBookmarkId(id: Long){
-//        bookmarkId = id
-//    }
-//
-//    val hadithList = repo.categoryHadithList(bookmarkId).asLiveData()
 
     private val expandedHadithList = MutableStateFlow<List<Long>>(listOf())
     fun toggleExpandedHadithList(id: Long){
@@ -66,6 +62,12 @@ class BookmarkDetailViewModel(application: Application): AndroidViewModel(applic
                 .flowOn(Dispatchers.IO)
                 .conflate()
                 .asLiveData()
+
+    fun deleteHadith(bookmarkUI: HadithBookmarkUI) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteBookmarkHadith(bookmarkUI.hadithBookmark)
+        }
+    }
 
     companion object {
         private val TAG = BookmarkDetailViewModel::class.java.simpleName

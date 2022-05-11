@@ -1,6 +1,7 @@
 package com.ihfazh.simpledorar.bookmark
 
 import android.app.AlertDialog
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,9 @@ class BookmarkAdapter: RecyclerView.Adapter<BookmarkAdapter.ViewHolder>(){
                 btnMore.setOnClickListener {
                     val popup = PopupMenu(binding.root.context, btnMore)
                     popup.inflate(R.menu.bookmark_item_menu)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        popup.setForceShowIcon(true)
+                    }
                     popup.setOnMenuItemClickListener {
                        when(it.itemId){
                            R.id.delete -> {
