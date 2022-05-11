@@ -25,7 +25,7 @@
         <entry key="app/src/main/res/layout/fragment_search_result_detail.xml" value="0.33229166666666665" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_category_bookmark.xml" value="0.2614322691975841" />
-        <entry key="app/src/main/res/layout/item_category_hadith.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_category_hadith.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_search_history.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/item_search_result.xml" value="0.5" />
         <entry key="app/src/main/res/layout/sample_dorar.xml" value="0.34791666666666665" />
