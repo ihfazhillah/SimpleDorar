@@ -87,6 +87,7 @@
             />
 
         <TextView
+            android:textIsSelectable="true"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="textStart"

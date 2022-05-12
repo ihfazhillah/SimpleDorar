@@ -28,12 +28,14 @@
         <entry key="app/src/main/res/layout/item_category_hadith.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_search_history.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/item_search_result.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/note_bottom_sheet.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/sample_dorar.xml" value="0.34791666666666665" />
         <entry key="app/src/main/res/layout/simple_dorar.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/view_search_history.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/view_search_result.xml" value="0.35625" />
         <entry key="app/src/main/res/menu/bookmark_item_menu.xml" value="0.31666666666666665" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.35625" />
+        <entry key="app/src/main/res/menu/detail_category_menu.xml" value="0.5" />
         <entry key="app/src/main/res/menu/item_delete.xml" value="0.14074074074074075" />
         <entry key="app/src/main/res/menu/navigation.xml" value="0.1" />
         <entry key="app/src/main/res/menu/toolbar_menu.xml" value="0.3572916666666667" />

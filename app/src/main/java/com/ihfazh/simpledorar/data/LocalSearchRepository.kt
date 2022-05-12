@@ -7,6 +7,8 @@ import com.ihfazh.simpledorar.bookmark.HadithBookmarkUI
 import com.ihfazh.simpledorar.bookmark.models.BookmarkCategoryEntity
 import com.ihfazh.simpledorar.bookmark.models.BookmarkWithHadiths
 import com.ihfazh.simpledorar.bookmark.models.HadithBookmarkEntity
+import com.ihfazh.simpledorar.note.BookmarkNote
+import com.ihfazh.simpledorar.note.models.BookmarkNoteEntity
 import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.SearchQuery
 import com.ihfazh.simpledorar.utils.toResultItem
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.map
 class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface {
     private val searchQueryDao = database.searchQueryDao()
     private val bookmarkDao = database.bookmarkDao()
+    private val noteDao = database.noteDao()
 
     companion object {
         private var instance: LocalSearchRepository? = null
@@ -87,6 +90,28 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
     override suspend fun deleteBookmark(category: BookmarkCategory) {
         category.toBookmarkCategoryEntity().let { category ->
             bookmarkDao.deleteCategory(category)
+        }
+    }
+
+    // NOTE feature
+
+    override fun getNoteCategory(categoryId: Long): Flow<BookmarkNote?> {
+        return noteDao.getNote(categoryId).toBookmarkNote()
+    }
+
+    override suspend fun createOrUpdateNote(bookmarkNote: BookmarkNote) {
+        return noteDao.createOrUpdate(bookmarkNote.toBookmarkNoteEntity())
+    }
+}
+
+private fun BookmarkNote.toBookmarkNoteEntity(): BookmarkNoteEntity {
+    return BookmarkNoteEntity(id,text, timestamp, categoryId)
+}
+
+private fun Flow<BookmarkNoteEntity?>.toBookmarkNote(): Flow<BookmarkNote?> {
+    return map { entity ->
+        entity?.let{
+            BookmarkNote(it.id, it.text, it.timestamp, it.categoryId)
         }
     }
 }

@@ -8,6 +8,8 @@ import androidx.room.RoomDatabase
 import com.ihfazh.simpledorar.bookmark.models.BookmarkCategoryEntity
 import com.ihfazh.simpledorar.bookmark.models.BookmarkDao
 import com.ihfazh.simpledorar.bookmark.models.HadithBookmarkEntity
+import com.ihfazh.simpledorar.note.models.BookmarkNoteEntity
+import com.ihfazh.simpledorar.note.models.NoteDao
 import com.ihfazh.simpledorar.search.models.SearchQueryDao
 import com.ihfazh.simpledorar.search.models.SearchQueryEntity
 
@@ -15,17 +17,20 @@ import com.ihfazh.simpledorar.search.models.SearchQueryEntity
     entities = [
         SearchQueryEntity::class,
         HadithBookmarkEntity::class,
-        BookmarkCategoryEntity::class
+        BookmarkCategoryEntity::class,
+        BookmarkNoteEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(1, 2)
+        AutoMigration(1, 2),
+        AutoMigration(2, 3),
     ]
 )
 abstract class DorarDatabase : RoomDatabase(){
     abstract fun searchQueryDao(): SearchQueryDao
     abstract fun bookmarkDao(): BookmarkDao
+    abstract fun noteDao(): NoteDao
 
     companion object {
         private val TAG = DorarDatabase::class.java.simpleName

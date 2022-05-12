@@ -3,6 +3,7 @@ package com.ihfazh.simpledorar.data
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
 import com.ihfazh.simpledorar.bookmark.HadithBookmarkUI
+import com.ihfazh.simpledorar.note.BookmarkNote
 import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.SearchQuery
 import kotlinx.coroutines.flow.Flow
@@ -24,4 +25,8 @@ interface SearchRepositoryInterface {
     fun categoryHadithList(id: Long): Flow<List<HadithBookmarkUI>>
     suspend fun updateBookmark(category: BookmarkCategory)
     suspend fun deleteBookmark(category: BookmarkCategory)
+
+    // NOTE feature
+    fun getNoteCategory(categoryId: Long): Flow<BookmarkNote?>
+    suspend fun createOrUpdateNote(bookmarkNote: BookmarkNote)
 }
