@@ -11,8 +11,7 @@ import com.ihfazh.simpledorar.note.BookmarkNote
 import com.ihfazh.simpledorar.note.models.BookmarkNoteEntity
 import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.SearchQuery
-import com.ihfazh.simpledorar.utils.toResultItem
-import com.ihfazh.simpledorar.utils.toSearchQuery
+import com.ihfazh.simpledorar.utils.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -108,63 +107,3 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         return noteDao.createOrUpdate(bookmarkNote.toBookmarkNoteEntity())
     }
 }
-
-private fun BookmarkNote.toBookmarkNoteEntity(): BookmarkNoteEntity {
-    return BookmarkNoteEntity(id,text, timestamp, categoryId)
-}
-
-private fun Flow<BookmarkNoteEntity?>.toBookmarkNote(): Flow<BookmarkNote?> {
-    return map { entity ->
-        entity?.let{
-            BookmarkNote(it.id, it.text, it.timestamp, it.categoryId)
-        }
-    }
-}
-
-private fun BookmarkCategory.toBookmarkCategoryEntity(): BookmarkCategoryEntity  =
-    BookmarkCategoryEntity(id, title)
-
-
-private fun Flow<List<HadithBookmarkEntity>>.toHadithBookmarkList(): Flow<List<HadithBookmarkUI>> {
-    return map {  bookmarks ->
-        bookmarks.map{ entity ->
-            val hadithBookmark = HadithBookmark(
-                    entity.id,
-                    entity.rawText,
-                    entity.rawi,
-                    entity.mohaddith,
-                    entity.mashdar,
-                    entity.shafha,
-                    entity.hokm,
-                )
-            HadithBookmarkUI(hadithBookmark)
-        }
-
-    }
-
-}
-
-private fun HadithBookmarkEntity.toHadithBookmarkEntity(): HadithBookmark {
-    return HadithBookmark(id, rawText, rawi, mohaddith, mashdar, shafha, hokm)
-}
-
-private fun HadithBookmark.toHadithBookmarkEntity(): HadithBookmarkEntity = HadithBookmarkEntity(
-    id, rawText, rawi, mohaddith, mashdar, shafha, hokm, category?.id ?: 0L
-)
-
-
-
-private fun List<BookmarkCategoryEntity>.toBookmarkCategory(): List<BookmarkCategory> {
-    return map {
-        BookmarkCategory(it.id, it.title)
-    }
-
-}
-
-private fun Flow<List<BookmarkCategoryEntity>>.toBookmarkCategory(): Flow<List<BookmarkCategory>>  =
-    map{ bookmarks ->
-        bookmarks.map{ bookmark ->
-            BookmarkCategory(bookmark.id, bookmark.title)
-        }
-    }
-
