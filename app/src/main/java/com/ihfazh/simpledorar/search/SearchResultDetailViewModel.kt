@@ -31,24 +31,6 @@ class SearchResultDetailViewModel(application: Application): AndroidViewModel(ap
     }
 
 
-    init {
-
-//        searchText.map {
-//            repo.searchCategory(it)
-//        }
-//
-//        viewModelScope.launch(Dispatchers.IO){
-//            searchText.asFlow().collect{ text ->
-//                Log.d("SearchResultDetailViewModel", "current text: $text: ")
-//                repo.searchCategory(text).collect{
-//                    categories.postValue(it)
-//                }
-//
-//            }
-//        }
-
-    }
-
     fun saveHadith(hadith: ResultItem){
         if (selectedBookmark.value == null) return
 
@@ -64,13 +46,11 @@ class SearchResultDetailViewModel(application: Application): AndroidViewModel(ap
                 hadith.hokm,
                 selectedBookmark.value!!
             ))
+            searchText.postValue("")
         }
+
     }
 
-//    fun createBookmark(text: String) =
-//        viewModelScope.launch(Dispatchers.IO){
-//            repo.inputCategory(text)
-//        }
 
     fun setSelectedBookmark(bookmarkCategory: BookmarkCategory) {
         viewModelScope.launch(Dispatchers.IO) {

@@ -60,7 +60,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_default="wrap"
                 app:layout_constraintTop_toBottomOf="@id/categorySearchWrapper"
                 app:layout_constraintBottom_toTopOf="@id/btn_add_new_bookmark"
                 app:layout_constraintStart_toStartOf="parent"

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.BottomSheetBookmarkHadithBinding
@@ -74,7 +75,8 @@ class BookmarkHadithBottomSheet(private val item: ResultItem): BottomSheetDialog
             resources.getDimensionPixelOffset(R.dimen.dp_19),
             0
         )
-        val input = EditText(context)
+        val input = TextInputEditText(context)
+        input.setText( viewModel.searchText.value?.toString() ?: "")
         textInputLayout.hint = "Bookmark Category"
         textInputLayout.addView(input)
 

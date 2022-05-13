@@ -123,23 +123,45 @@ class SearchFragment : Fragment() {
 
     private fun toggleViewByState(state: SearchState?) {
         viewBinding?.let { binding ->
-            val views = listOf(
+            val bindings = listOf(
                 binding.searchHistory,
-                binding.searchResults
+                binding.searchResults,
             )
 
-            val viewMaps = mapOf(
+            val bindingMaps = mapOf(
                 SearchState.HasHistory to binding.searchHistory,
-                SearchState.SearchResult to binding.searchResults
+                SearchState.SearchResult to binding.searchResults,
+            )
+
+            state?.let {
+                val view = bindingMaps[it]
+                bindings.forEach { v ->
+                    if (v == view){
+                        v.root.visibility = View.VISIBLE
+                    } else {
+                        v.root.visibility = View.INVISIBLE
+                    }
+
+                }
+            }
+
+            // for default view
+            val views = listOf(
+                binding.noHistory,
+                binding.noResult
+            )
+            val viewMaps = mapOf(
+                SearchState.NoSearchResult to binding.noResult,
+                SearchState.NoHistory to binding.noHistory,
             )
 
             state?.let {
                 val view = viewMaps[it]
                 views.forEach { v ->
                     if (v == view){
-                        v.root.visibility = View.VISIBLE
+                        v.visibility = View.VISIBLE
                     } else {
-                        v.root.visibility = View.INVISIBLE
+                        v.visibility = View.INVISIBLE
                     }
 
                 }

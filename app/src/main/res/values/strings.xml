@@ -43,4 +43,6 @@
     <string name="no">no</string>
     <string name="change_category">change category</string>
     <string name="add_new_bookmark">add new bookmark</string>
+    <string name="no_history">No histories. Make a first search.</string>
+    <string name="no_result">No result found. Refine your search query</string>
 </resources>
