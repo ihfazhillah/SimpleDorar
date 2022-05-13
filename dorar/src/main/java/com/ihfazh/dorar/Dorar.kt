@@ -56,8 +56,12 @@ class Dorar {
     private fun getResponse(queryString: Map<String, String>): String {
         return buildString {
             val uri = buildURI(queryString)
-            val connection = uri.openConnection()
-            val reader = BufferedReader(InputStreamReader(connection.getInputStream()))
+            val connection = uri.openConnection().apply {
+                readTimeout = 60_000 // 1 minutes
+            }
+            val reader = BufferedReader(
+                InputStreamReader(connection.getInputStream())
+            )
 
             var temp: String? = reader.readLine()
             while(true){

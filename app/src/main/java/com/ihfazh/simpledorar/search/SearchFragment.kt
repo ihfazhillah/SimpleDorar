@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -118,6 +119,10 @@ class SearchFragment : Fragment() {
             viewModel.searchResults.observe(viewLifecycleOwner){
                 searchResultRVAdapter.submitList(it)
             }
+        }
+
+        viewModel.message.observe(viewLifecycleOwner){
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }
 

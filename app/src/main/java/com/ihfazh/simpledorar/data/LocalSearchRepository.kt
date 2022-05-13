@@ -5,15 +5,15 @@ import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
 import com.ihfazh.simpledorar.bookmark.HadithBookmarkUI
 import com.ihfazh.simpledorar.bookmark.models.BookmarkCategoryEntity
-import com.ihfazh.simpledorar.bookmark.models.BookmarkWithHadiths
-import com.ihfazh.simpledorar.bookmark.models.HadithBookmarkEntity
 import com.ihfazh.simpledorar.note.BookmarkNote
-import com.ihfazh.simpledorar.note.models.BookmarkNoteEntity
-import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.SearchQuery
 import com.ihfazh.simpledorar.utils.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import java.io.IOException
+import java.lang.Exception
+import java.net.SocketTimeoutException
+import java.net.UnknownServiceException
+
 
 class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface {
     private val searchQueryDao = database.searchQueryDao()
@@ -47,8 +47,21 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         return searchQueryDao.getAll().toSearchQuery()
     }
 
-    override suspend fun search(query: String, page: Int): List<ResultItem> {
-        return Dorar().search(query, page).toResultItem()
+    override suspend fun search(query: String, page: Int): DorarResponse {
+        val dorar = Dorar()
+
+        return try {
+            val resultItem = dorar.search(query, page).toResultItem()
+            DorarResponse.Success(resultItem)
+        } catch (er: SocketTimeoutException){
+            DorarResponse.Error("timed out")
+        } catch (er: IOException){
+            DorarResponse.Error("io error")
+        } catch (er: UnknownServiceException){
+            DorarResponse.Error("protocol error")
+        } catch (er: Exception){
+            DorarResponse.Error("unknown")
+        }
     }
 
     override fun searchCategory(text: String?): Flow<List<BookmarkCategory>> {

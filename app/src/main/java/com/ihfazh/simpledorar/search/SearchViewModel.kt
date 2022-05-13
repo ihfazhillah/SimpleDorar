@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ihfazh.simpledorar.data.DorarDatabase
+import com.ihfazh.simpledorar.data.DorarResponse
 import com.ihfazh.simpledorar.data.LocalSearchRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -22,6 +23,7 @@ class SearchViewModel(application: Application): AndroidViewModel(application) {
     val histories: MutableLiveData<List<SearchQuery>> = MutableLiveData(listOf())
     val searchResults: MutableLiveData<List<ResultItem>> = MutableLiveData()
     val isLoading = MutableLiveData(false)
+    val message = MutableLiveData("")
 
     private val page = MutableLiveData(1)
 
@@ -70,14 +72,22 @@ class SearchViewModel(application: Application): AndroidViewModel(application) {
 
             val currentResults = searchResults.value
 
-            val results = repo.search(q, page.value!!)
-            val finalResults = if (currentResults.isNullOrEmpty()) results else currentResults + results
-            searchResults.postValue(finalResults)
+            val results: DorarResponse = repo.search(q, page.value!!)
 
-            if (finalResults.isEmpty()) {
-                searchState.postValue(SearchState.NoSearchResult)
-            } else {
-                searchState.postValue(SearchState.SearchResult)
+            when(results){
+                is DorarResponse.Success -> {
+                    val finalResults = if (currentResults.isNullOrEmpty()) results.hadithList else currentResults + results.hadithList
+                    searchResults.postValue(finalResults)
+
+                    if (finalResults.isEmpty()) {
+                        searchState.postValue(SearchState.NoSearchResult)
+                    } else {
+                        searchState.postValue(SearchState.SearchResult)
+                    }
+                }
+                is DorarResponse.Error -> {
+                    message.postValue("Uh oh, something wrong happens. Check your connection")
+                }
             }
 
             isLoading.postValue(false)

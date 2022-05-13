@@ -13,7 +13,7 @@ interface SearchRepositoryInterface {
     suspend fun deleteAllHistories()
     suspend fun deleteHistory(id: Long)
     suspend fun appendQuery(value: String): Flow<List<SearchQuery>>
-    suspend fun search(query: String, page: Int = 0): List<ResultItem>
+    suspend fun search(query: String, page: Int = 0): DorarResponse
 
     // BOOKMARK feature
     fun searchCategory(text: String?): Flow<List<BookmarkCategory>>
