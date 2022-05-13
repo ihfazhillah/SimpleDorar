@@ -1,5 +1,7 @@
 package com.ihfazh.simpledorar.data
 
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
 import com.ihfazh.simpledorar.bookmark.HadithBookmarkUI
@@ -9,10 +11,10 @@ import com.ihfazh.simpledorar.search.SearchQuery
 import kotlinx.coroutines.flow.Flow
 
 interface SearchRepositoryInterface {
-    suspend fun getHistoriesWithLimit(start: Int = 0, limit: Int = 0): Flow<List<SearchQuery>>
+    fun getHistoriesWithLimit(start: Int = 0, limit: Int = 0): Flow<PagingData<SearchQuery>>
     suspend fun deleteAllHistories()
     suspend fun deleteHistory(id: Long)
-    suspend fun appendQuery(value: String): Flow<List<SearchQuery>>
+    suspend fun appendQuery(value: String): Flow<PagingData<SearchQuery>>
     suspend fun search(query: String, page: Int = 0): DorarResponse
 
     // BOOKMARK feature

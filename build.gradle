@@ -11,6 +11,7 @@ buildscript {
         lc_version = "2.4.1"
         nav_version = "2.4.2"
         room_version = "2.4.2"
+        paging_version = "3.1.1"
 
     }
 

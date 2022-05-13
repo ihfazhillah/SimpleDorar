@@ -20,26 +20,15 @@ class SearchViewModel(application: Application): AndroidViewModel(application) {
     val searchState: MutableLiveData<SearchState> = MutableLiveData(SearchState.NoHistory)
 
     val query = MutableLiveData("")
-    val histories: MutableLiveData<List<SearchQuery>> = MutableLiveData(listOf())
+//    val histories: MutableLiveData<List<SearchQuery>> = MutableLiveData(listOf())
     val searchResults: MutableLiveData<List<ResultItem>> = MutableLiveData()
     val isLoading = MutableLiveData(false)
     val message = MutableLiveData("")
 
+    val histories = repo.getHistoriesWithLimit()
+
     private val page = MutableLiveData(1)
 
-    init {
-        viewModelScope.launch (Dispatchers.IO){
-            repo.getHistoriesWithLimit().collect { historyItems ->
-                if (historyItems.isNotEmpty() and histories.value!!.isEmpty()){
-                    searchState.postValue(SearchState.HasHistory)
-                } else if (historyItems.isEmpty()) {
-                    searchState.postValue(SearchState.NoHistory)
-                }
-
-                histories.postValue(historyItems)
-            }
-        }
-    }
 
     fun deleteAllQueries(){
         viewModelScope.launch(Dispatchers.IO) {

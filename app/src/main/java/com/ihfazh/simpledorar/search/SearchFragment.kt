@@ -14,9 +14,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ihfazh.simpledorar.databinding.FragmentSearchBinding
 import kotlinx.android.synthetic.main.view_search_history.view.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by activityViewModels()
@@ -64,7 +68,7 @@ class SearchFragment : Fragment() {
             }
 
             // SEARCH HISTORY SECTION
-            searchQueryRVAdapter = SearchQueryRecyclerViewAdapter(viewModel)
+            searchQueryRVAdapter = SearchQueryRecyclerViewAdapter(viewModel, SearchQueryRecyclerViewAdapter.SearchQueryDiff)
             searchQueryRVAdapter.onClickItem = { query ->
                 viewModel.search(query.query)
                 searchTextInput.requestFocus()
@@ -110,8 +114,20 @@ class SearchFragment : Fragment() {
         }
 
         if (this::searchQueryRVAdapter.isInitialized){
-            viewModel.histories.observe(viewLifecycleOwner){
-                searchQueryRVAdapter.submitList(it)
+            viewLifecycleOwner.lifecycleScope.launch{
+                viewModel.histories.collectLatest { pagingData ->
+                    searchQueryRVAdapter.submitData(pagingData)
+                }
+            }
+
+            searchQueryRVAdapter.addLoadStateListener { loadState ->
+                if (loadState.append.endOfPaginationReached){
+                    if (searchQueryRVAdapter.itemCount < 1){
+                        viewModel.searchState.postValue(SearchState.NoHistory)
+                    } else {
+                        viewModel.searchState.postValue(SearchState.HasHistory)
+                    }
+                }
             }
         }
 

@@ -1,5 +1,7 @@
 package com.ihfazh.simpledorar.data
 
+import androidx.lifecycle.Transformations.map
+import androidx.paging.*
 import com.ihfazh.dorar.Dorar
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
@@ -7,8 +9,10 @@ import com.ihfazh.simpledorar.bookmark.HadithBookmarkUI
 import com.ihfazh.simpledorar.bookmark.models.BookmarkCategoryEntity
 import com.ihfazh.simpledorar.note.BookmarkNote
 import com.ihfazh.simpledorar.search.SearchQuery
+import com.ihfazh.simpledorar.search.models.SearchQueryEntity
 import com.ihfazh.simpledorar.utils.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.io.IOException
 import java.lang.Exception
 import java.net.SocketTimeoutException
@@ -30,8 +34,15 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
             }
     }
 
-    override suspend fun getHistoriesWithLimit(start: Int, limit: Int): Flow<List<SearchQuery>> {
-        return searchQueryDao.getAll().toSearchQuery()
+    override fun getHistoriesWithLimit(start: Int, limit: Int): Flow<PagingData<SearchQuery>>{
+        return Pager(
+            config = PagingConfig(10),
+            pagingSourceFactory = { searchQueryDao.getAll() },
+        ).flow.map{ pagingData ->
+            pagingData.map { entity ->
+                SearchQuery(entity.id, entity.query, entity.timestamp)
+            }
+        }
     }
 
     override suspend fun deleteAllHistories() {
@@ -42,9 +53,16 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         searchQueryDao.delete(id)
     }
 
-    override suspend fun appendQuery(value: String): Flow<List<SearchQuery>> {
+    override suspend fun appendQuery(value: String): Flow<PagingData<SearchQuery>> {
         searchQueryDao.createOrUpdateTimestamp(value)
-        return searchQueryDao.getAll().toSearchQuery()
+        return Pager(
+            config = PagingConfig(10),
+            pagingSourceFactory = {searchQueryDao.getAll()}
+        ).flow.map{ pagingData ->
+            pagingData.map { entity ->
+                SearchQuery(entity.id, entity.query, entity.timestamp)
+            }
+        }
     }
 
     override suspend fun search(query: String, page: Int): DorarResponse {
@@ -120,3 +138,4 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         return noteDao.createOrUpdate(bookmarkNote.toBookmarkNoteEntity())
     }
 }
+

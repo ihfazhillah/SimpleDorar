@@ -2,23 +2,24 @@ package com.ihfazh.simpledorar.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ihfazh.simpledorar.databinding.ItemSearchHistoryBinding
 
-class SearchQueryRecyclerViewAdapter(private val viewModel: SearchViewModel):
-    RecyclerView.Adapter<SearchQueryRecyclerViewAdapter.ViewHolder>() {
+class SearchQueryRecyclerViewAdapter(private val viewModel: SearchViewModel, diffCallback: DiffUtil.ItemCallback<SearchQuery>):
+    PagingDataAdapter<SearchQuery, SearchQueryRecyclerViewAdapter.ViewHolder>(diffCallback) {
 
-    private var items: List<SearchQuery> = listOf()
+//    private var items: List<SearchQuery> = listOf()
 
     var onClickItem: (SearchQuery) -> Unit = {}
 
-    fun submitList(items: List<SearchQuery>){
-        val callback = SearchQueryDiffCallback(this.items, items)
-        val result = DiffUtil.calculateDiff(callback)
-        this.items = items
-        result.dispatchUpdatesTo(this)
-    }
+//    fun submitList(items: List<SearchQuery>){
+//        val callback = SearchQueryDiffCallback(this.items, items)
+//        val result = DiffUtil.calculateDiff(callback)
+//        this.items = items
+//        result.dispatchUpdatesTo(this)
+//    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -34,35 +35,25 @@ class SearchQueryRecyclerViewAdapter(private val viewModel: SearchViewModel):
         holder: ViewHolder,
         position: Int
     ) {
-        holder.bind(items[position])
-        holder.binding.root.setOnClickListener {
-            onClickItem.invoke(items[position])
+        getItem(position)?.let{ item ->
+            holder.bind(item)
+            holder.binding.root.setOnClickListener {
+                onClickItem.invoke(item)
+            }
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    inner class SearchQueryDiffCallback(private val old: List<SearchQuery>, private val new: List<SearchQuery>):
-        DiffUtil.Callback(){
-        override fun getOldListSize(): Int {
-            return old.size
+    object SearchQueryDiff: DiffUtil.ItemCallback<SearchQuery>() {
+        override fun areItemsTheSame(oldItem: SearchQuery, newItem: SearchQuery): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun getNewListSize(): Int {
-            return new.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return old[oldItemPosition].id == new[newItemPosition].id
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return old[oldItemPosition].id == new[newItemPosition].id
+        override fun areContentsTheSame(oldItem: SearchQuery, newItem: SearchQuery): Boolean {
+            return oldItem == newItem
         }
 
     }
+
 
     class ViewHolder(val binding: ItemSearchHistoryBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(searchQuery: SearchQuery) {
