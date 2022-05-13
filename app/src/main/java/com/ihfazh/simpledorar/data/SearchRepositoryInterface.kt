@@ -16,7 +16,8 @@ interface SearchRepositoryInterface {
     suspend fun search(query: String, page: Int = 0): List<ResultItem>
 
     // BOOKMARK feature
-    suspend fun searchCategory(text: String): Flow<List<BookmarkCategory>>
+    fun searchCategory(text: String?): Flow<List<BookmarkCategory>>
+    fun getAllCategories(): Flow<List<BookmarkCategory>>
     suspend fun inputCategory(text: String): Long
     suspend fun saveHadith(hadithBookmark: HadithBookmark)
     suspend fun deleteBookmarkHadith(hadithBookmark: HadithBookmark)

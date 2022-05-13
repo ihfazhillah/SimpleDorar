@@ -9,8 +9,11 @@ abstract class BookmarkDao {
     @Insert
     abstract fun insertCategory(bookmarkCategoryEntity: BookmarkCategoryEntity): Long
 
-    @Query("select * from bookmark_category where title like :text")
-    abstract fun searchCategory(text: String): Flow<List<BookmarkCategoryEntity>>
+    @Query("select * from bookmark_category where (:text is null or title like :text)")
+    abstract fun searchCategory(text: String?): Flow<List<BookmarkCategoryEntity>>
+
+    @Query("select * from bookmark_category")
+    abstract fun getAllCategories(): Flow<List<BookmarkCategoryEntity>>
 
     @Query("select * from bookmark_category where title like :s")
     abstract fun searchCategorySync(s: String): List<BookmarkCategoryEntity>

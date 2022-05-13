@@ -1,6 +1,7 @@
 package com.ihfazh.simpledorar.search
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
@@ -10,18 +11,41 @@ import com.ihfazh.simpledorar.data.SearchRepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class SearchResultDetailViewModel(application: Application): AndroidViewModel(application) {
-    private val repo : SearchRepositoryInterface
+//    private val repo : SearchRepositoryInterface
     val selectedBookmark = MutableLiveData<BookmarkCategory>()
 
     val enableSaveHadith = MutableLiveData(false)
 
+    val searchText = MutableLiveData<String?>(null)
+    val repo = DorarDatabase.getInstance(application.applicationContext).let{
+        LocalSearchRepository.getInstance(it)
+    }
+    val categories: LiveData<List<BookmarkCategory>> = searchText.switchMap{ text ->
+
+        Log.d("SearchResultDetailViewModel", "current text: $text: ")
+        repo.searchCategory(text).asLiveData()
+    }
+
+
     init {
-        repo = DorarDatabase.getInstance(application.applicationContext).let{
-            LocalSearchRepository.getInstance(it)
-        }
+
+//        searchText.map {
+//            repo.searchCategory(it)
+//        }
+//
+//        viewModelScope.launch(Dispatchers.IO){
+//            searchText.asFlow().collect{ text ->
+//                Log.d("SearchResultDetailViewModel", "current text: $text: ")
+//                repo.searchCategory(text).collect{
+//                    categories.postValue(it)
+//                }
+//
+//            }
+//        }
 
     }
 

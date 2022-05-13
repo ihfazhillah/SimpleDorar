@@ -52,8 +52,13 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         return Dorar().search(query, page).toResultItem()
     }
 
-    override suspend fun searchCategory(text: String): Flow<List<BookmarkCategory>> {
-        return bookmarkDao.searchCategory(text).toBookmarkCategory()
+    override fun searchCategory(text: String?): Flow<List<BookmarkCategory>> {
+        val query = text?.let { "%$it%" }
+        return bookmarkDao.searchCategory(query).toBookmarkCategory()
+    }
+
+    override fun getAllCategories(): Flow<List<BookmarkCategory>> {
+        return bookmarkDao.getAllCategories().toBookmarkCategory()
     }
 
     override suspend fun inputCategory(text: String): Long {

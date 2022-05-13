@@ -16,53 +16,72 @@
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/test"
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp"
+                android:id="@+id/guidlineStart"
+                />
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp"
+                android:id="@+id/guidlineEnd"
+                />
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="16dp"
+                android:id="@+id/guidlineTop"
                 />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/categoryInputWrapper"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guidlineStart"
+                app:layout_constraintEnd_toEndOf="@id/guidlineEnd"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:layout_constraintTop_toTopOf="@id/guidlineTop"
+                android:id="@+id/categorySearchWrapper"
                 android:hint="@string/search_category"
-                app:layout_constraintEnd_toStartOf="@id/ok"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 >
 
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/categoryInput"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textAutoComplete"
-                    android:completionThreshold="0"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/categorySearch"
+                    android:text="@={vm.searchText}"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/ok"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/AppTheme.ButtonOnlyIcon"
-                app:icon="@drawable/ic_baseline_save_24"
+                app:layout_constraintTop_toBottomOf="@id/categorySearchWrapper"
+                app:layout_constraintBottom_toTopOf="@id/btn_add_new_bookmark"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/categoryInputWrapper"
-                app:layout_constraintTop_toTopOf="@id/categoryInputWrapper"
-                app:layout_constraintBottom_toBottomOf="@id/categoryInputWrapper"
-                android:layout_marginEnd="8dp"
-                android:enabled="@{vm.enableSaveHadith}"
+                android:layout_marginTop="8dp"
+                android:id="@+id/addToCategoryRv"
+                tools:listitem="@layout/item_add_to_category"
                 />
+
+            <Button
+                android:id="@+id/btn_add_new_bookmark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_new_bookmark"
+                app:layout_constraintStart_toStartOf="@id/guidlineStart"
+                app:layout_constraintEnd_toEndOf="@id/guidlineEnd"
+                app:layout_constraintTop_toBottomOf="@id/addToCategoryRv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

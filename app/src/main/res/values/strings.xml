@@ -42,4 +42,5 @@
     <string name="delete_confirmation">Are you sure to delete this %s?</string>
     <string name="no">no</string>
     <string name="change_category">change category</string>
+    <string name="add_new_bookmark">add new bookmark</string>
 </resources>
