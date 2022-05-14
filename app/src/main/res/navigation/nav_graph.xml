@@ -1,23 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/searchFragment"
     android:id="@+id/nav_graph">
 
+    <action android:id="@+id/goToSearchResultDetail"
+        app:destination="@id/searchResultDetail"
+        >
+        <argument android:name="query" app:argType="string"/>
+        <argument android:name="resultItem" app:argType="com.ihfazh.simpledorarnew.search.ResultItem"/>
+    </action>
+
+    <action android:id="@+id/goToBookmarkDetail"
+        app:destination="@id/bookmarkHadithDetailFragment"
+        >
+        <argument android:name="title" app:argType="string"/>
+        <argument android:name="id" app:argType="long"/>
+    </action>
+
+    <action
+        android:id="@+id/goToLicense"
+        app:destination="@id/webview"
+        />
+
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.ihfazh.simpledorar.fragments.SearchFragment"
-        android:label="fragment_search"
+        android:name="com.ihfazh.simpledorarnew.search.SearchFragment"
+        tools:layout="@layout/fragment_search"
+        android:label="@string/app_name"
         />
+
     <fragment
-        android:id="@+id/historyFragment"
-        android:name="com.ihfazh.simpledorar.fragments.HistoryFragment"
-        android:label="fragment_history"
-        />
+        android:id="@+id/searchResultDetail"
+        android:name="com.ihfazh.simpledorarnew.search.SearchResultDetail"
+        android:label="{query}"
+        tools:layout="@layout/fragment_search_result_detail"
+        >
+        <argument android:name="query" app:argType="string"/>
+        <argument android:name="resultItem" app:argType="com.ihfazh.simpledorarnew.search.ResultItem"/>
+    </fragment>
+
     <fragment
-        android:id="@+id/settingFragment"
-        android:name="com.ihfazh.simpledorar.fragments.SettingFragment"
-        android:label="fragment_setting"
+        android:id="@+id/bookmarkFragment"
+        android:name="com.ihfazh.simpledorarnew.bookmark.BookmarkListFragment"
+        android:label="@string/bookmark"
+        tools:layout="@layout/fragment_bookmark_list"
         />
+
+    <fragment
+        android:id="@+id/bookmarkHadithDetailFragment"
+        android:name="com.ihfazh.simpledorarnew.bookmark.BookmarkDetailFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_bookmark_detail"
+        >
+        <argument android:name="title" app:argType="string"/>
+        <argument android:name="id" app:argType="long"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.ihfazh.simpledorarnew.InfoFragment"
+        tools:layout="@layout/fragment_info"
+        android:label="Info"
+        />
+
+    <fragment
+        android:id="@+id/webview"
+        android:name="com.ihfazh.simpledorarnew.SimpleWebviewFragment"
+        tools:layout="@layout/fragment_simple_webview"
+        android:label="Info"
+        />
+
 
 </navigation>

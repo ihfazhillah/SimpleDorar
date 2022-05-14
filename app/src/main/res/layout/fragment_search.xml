@@ -1,14 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.SearchFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="vm"
+            type="com.ihfazh.simpledorarnew.search.SearchViewModel" />
+        <variable
+            name="searchState"
+            type="com.ihfazh.simpledorarnew.search.SearchState" />
+        <import type="android.view.View"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Search" />
+        tools:context=".search.SearchFragment">
 
-</FrameLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginStart="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchContainer"
+            app:layout_constraintEnd_toStartOf="@id/btn_speak"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:endIconMode="clear_text"
+            android:layoutDirection="rtl"
+            android:textDirection="rtl"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            app:startIconDrawable="@drawable/ic_baseline_search_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/placeholder"
+                android:id="@+id/searchTextInput"
+                android:textDirection="anyRtl"
+                android:text="@={vm.query}"
+                android:layoutDirection="rtl"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:imeActionLabel="@string/search"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:src="@drawable/ic_baseline_mic_24"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btn_speak"
+            app:layout_constraintStart_toEndOf="@id/searchContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/searchContainer"
+            app:layout_constraintBottom_toBottomOf="@id/searchContainer"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchContainer"
+            android:layout_marginTop="8dp" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            android:id="@+id/progress"
+            android:indeterminate="true"
+            app:indeterminateAnimationType="contiguous"
+            app:indicatorColor="@array/progress_color"
+            android:visibility="@{vm.isLoading ? View.VISIBLE : View.GONE}"
+            />
+
+        <include
+            android:id="@+id/search_history"
+            layout="@layout/view_search_history"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            />
+
+        <include
+            android:id="@+id/search_results"
+            layout="@layout/view_search_result"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_history"
+            android:id="@+id/noHistory"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_result"
+            android:id="@+id/noResult"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
