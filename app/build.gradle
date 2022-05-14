@@ -12,11 +12,11 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.ihfazh.simpledorar"
+        applicationId "com.ihfazh.simpledorarnew"
         minSdkVersion 28
         targetSdkVersion 31
-        versionCode 120
-        versionName "1.1"
+        versionCode 201
+        versionName "2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

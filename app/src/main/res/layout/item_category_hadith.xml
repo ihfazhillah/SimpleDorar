@@ -6,10 +6,10 @@
     <data>
         <variable
             name="result"
-            type="com.ihfazh.simpledorar.bookmark.HadithBookmarkUI" />
+            type="com.ihfazh.simpledorarnew.bookmark.HadithBookmarkUI" />
         <variable
             name="uiHelper"
-            type="com.ihfazh.simpledorar.utils.HadithUIHelper" />
+            type="com.ihfazh.simpledorarnew.utils.HadithUIHelper" />
 
     </data>
 

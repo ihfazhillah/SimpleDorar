@@ -7,7 +7,7 @@
 
         <variable
             name="resultItem"
-            type="com.ihfazh.simpledorar.search.ResultItem" />
+            type="com.ihfazh.simpledorarnew.search.ResultItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

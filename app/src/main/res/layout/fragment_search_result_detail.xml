@@ -6,13 +6,13 @@
     <data>
         <variable
             name="resultItem"
-            type="com.ihfazh.simpledorar.search.ResultItem" />
+            type="com.ihfazh.simpledorarnew.search.ResultItem" />
         <variable
             name="styledText"
             type="android.text.SpannableString" />
         <variable
             name="vm"
-            type="com.ihfazh.simpledorar.search.SearchResultDetailViewModel"/>
+            type="com.ihfazh.simpledorarnew.search.SearchResultDetailViewModel"/>
 
     </data>
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.ihfazh.simpledorar.search.SearchViewModel" />
+            type="com.ihfazh.simpledorarnew.search.SearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

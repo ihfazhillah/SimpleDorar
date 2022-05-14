@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.ihfazh.simpledorar.search.ResultItem" />
+            type="com.ihfazh.simpledorarnew.search.ResultItem" />
 
     </data>
 

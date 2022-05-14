@@ -6,7 +6,7 @@
     <data>
         <variable
             name="bookmark"
-            type="com.ihfazh.simpledorar.bookmark.BookmarkCategory" />
+            type="com.ihfazh.simpledorarnew.bookmark.BookmarkCategory" />
 
     </data>
 

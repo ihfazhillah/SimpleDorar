@@ -1,4 +1,4 @@
-package com.ihfazh.simpledorar;
+package com.ihfazh.simpledorarnew;
 
 import static org.junit.Assert.*;
 

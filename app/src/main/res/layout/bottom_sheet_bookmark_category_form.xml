@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.ihfazh.simpledorar.bookmark.BookmarkHadithBottomSheetFormViewModel" />
+            type="com.ihfazh.simpledorarnew.bookmark.BookmarkHadithBottomSheetFormViewModel" />
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
