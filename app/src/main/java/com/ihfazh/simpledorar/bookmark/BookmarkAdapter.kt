@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.ItemCategoryBookmarkBinding
 
-class BookmarkAdapter: RecyclerView.Adapter<BookmarkAdapter.ViewHolder>(){
+class BookmarkAdapter(diffCallback: DiffUtil.ItemCallback<BookmarkCategory>): PagingDataAdapter<BookmarkCategory, BookmarkAdapter.ViewHolder>(diffCallback){
 
-    private val items = mutableListOf<BookmarkCategory>()
     var onItemClick: (BookmarkCategory, View) -> Unit = {_, _ ->}
     var onUpdateClick: (BookmarkCategory) -> Unit = {}
     var onDeleteClick: (BookmarkCategory) -> Unit = {}
@@ -35,24 +35,13 @@ class BookmarkAdapter: RecyclerView.Adapter<BookmarkAdapter.ViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        items[position].let{ item ->
+        getItem(position)?.let{ item ->
             holder.bind(item)
             holder.binding.root.setOnClickListener { onItemClick(item, holder.binding.title) }
             holder.binding.title.transitionName = "test" + item.id.toString()
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    fun submitList(newItems: List<BookmarkCategory>){
-        val callback = BookmarkCallback(this.items, newItems)
-        val callbackResult = DiffUtil.calculateDiff(callback)
-        items.clear()
-        items.addAll(newItems)
-        callbackResult.dispatchUpdatesTo(this)
-    }
 
     class ViewHolder(val binding: ItemCategoryBookmarkBinding): RecyclerView.ViewHolder(binding.root) {
         var onUpdateClick: (BookmarkCategory) -> Unit = {}
@@ -99,25 +88,21 @@ class BookmarkAdapter: RecyclerView.Adapter<BookmarkAdapter.ViewHolder>(){
 
     }
 
-    inner class BookmarkCallback(val oldList: List<BookmarkCategory>, val newList: List<BookmarkCategory>):
-        DiffUtil.Callback(){
-        override fun getOldListSize(): Int {
-            return oldList.size
+    object BookmarkCallback: DiffUtil.ItemCallback<BookmarkCategory>(){
+        override fun areItemsTheSame(
+            oldItem: BookmarkCategory,
+            newItem: BookmarkCategory
+        ): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun getNewListSize(): Int {
-            return newList.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val old = oldList[oldItemPosition]
-            val new = newList[newItemPosition]
-            return old == new
+        override fun areContentsTheSame(
+            oldItem: BookmarkCategory,
+            newItem: BookmarkCategory
+        ): Boolean {
+            return oldItem == newItem
         }
     }
+
 
 }

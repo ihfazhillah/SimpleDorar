@@ -1,5 +1,6 @@
 package com.ihfazh.simpledorar.utils
 
+import androidx.paging.*
 import com.ihfazh.dorar.HadithItem
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
@@ -14,6 +15,9 @@ import com.ihfazh.simpledorar.search.SearchQuery
 import com.ihfazh.simpledorar.search.models.SearchQueryEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+
+val pagingConfig = PagingConfig(10)
+
 
 fun List<HadithItem>.toResultItem(): List<ResultItem> =
     map{
@@ -54,23 +58,25 @@ fun BookmarkCategory.toBookmarkCategoryEntity(): BookmarkCategoryEntity =
     BookmarkCategoryEntity(id, title)
 
 
-fun Flow<List<HadithBookmarkEntity>>.toHadithBookmarkList(): Flow<List<HadithBookmarkUI>> {
-    return map {  bookmarks ->
-        bookmarks.map{ entity ->
-            val hadithBookmark = HadithBookmark(
-                entity.id,
-                entity.rawText,
-                entity.rawi,
-                entity.mohaddith,
-                entity.mashdar,
-                entity.shafha,
-                entity.hokm,
-            )
-            HadithBookmarkUI(hadithBookmark)
+fun PagingSource<Int, HadithBookmarkEntity>.toHadithBookmarkList(): Flow<PagingData<HadithBookmarkUI>> {
+    return Pager(
+        pagingConfig
+    ) { this }
+        .flow.map { pagingData ->
+            pagingData.map{ entity ->
+                val hadithBookmark = HadithBookmark(
+                    entity.id,
+                    entity.rawText,
+                    entity.rawi,
+                    entity.mohaddith,
+                    entity.mashdar,
+                    entity.shafha,
+                    entity.hokm,
+                )
+                HadithBookmarkUI(hadithBookmark)
+            }
+
         }
-
-    }
-
 }
 
 fun HadithBookmarkEntity.toHadithBookmarkEntity(): HadithBookmark {
@@ -90,10 +96,13 @@ fun List<BookmarkCategoryEntity>.toBookmarkCategory(): List<BookmarkCategory> {
 
 }
 
-fun Flow<List<BookmarkCategoryEntity>>.toBookmarkCategory(): Flow<List<BookmarkCategory>>  =
-    map{ bookmarks ->
-        bookmarks.map{ bookmark ->
-            BookmarkCategory(bookmark.id, bookmark.title)
+fun PagingSource<Int, BookmarkCategoryEntity>.toBookmarkCategory(): Flow<PagingData<BookmarkCategory>>  =
+    Pager(
+        pagingConfig
+    ) {
+        this
+    }.flow.map { pagingData ->
+        pagingData.map { entity ->
+            BookmarkCategory(entity.id, entity.title)
         }
     }
-

@@ -6,14 +6,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.ihfazh.simpledorar.data.DorarDatabase
 import com.ihfazh.simpledorar.data.LocalSearchRepository
 import com.ihfazh.simpledorar.search.ResultItem
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class BookmarkDetailViewModel(application: Application): AndroidViewModel(application) {
@@ -43,9 +43,10 @@ class BookmarkDetailViewModel(application: Application): AndroidViewModel(applic
         }
     }
 
-    fun getHadithList(id: Long): LiveData<List<HadithBookmarkUI>> =
-            repo.categoryHadithList(id)
-                .combine(expandedHadithList){ hadithUIs: List<HadithBookmarkUI>, expandedIdList: List<Long> ->
+    fun getHadithList(id: Long): Flow<PagingData<HadithBookmarkUI>> =
+        repo.categoryHadithList(id)
+            .cachedIn(viewModelScope)
+                .combine(expandedHadithList){ hadithUIs: PagingData<HadithBookmarkUI>, expandedIdList: List<Long> ->
                     Log.d(TAG, "getHadithList: hadithUIs: $hadithUIs")
                     Log.d(TAG, "getHadithList: expandedList: $expandedIdList")
 
@@ -60,8 +61,7 @@ class BookmarkDetailViewModel(application: Application): AndroidViewModel(applic
                     updatedList
                 }
                 .flowOn(Dispatchers.IO)
-                .conflate()
-                .asLiveData()
+            .conflate()
 
     fun deleteHadith(bookmarkUI: HadithBookmarkUI) {
         viewModelScope.launch(Dispatchers.IO) {

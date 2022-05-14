@@ -3,15 +3,16 @@ package com.ihfazh.simpledorar.search
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.lifecycle.map
+import androidx.paging.PagingData
 import com.ihfazh.simpledorar.bookmark.BookmarkCategory
 import com.ihfazh.simpledorar.bookmark.HadithBookmark
 import com.ihfazh.simpledorar.data.DorarDatabase
 import com.ihfazh.simpledorar.data.LocalSearchRepository
 import com.ihfazh.simpledorar.data.SearchRepositoryInterface
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class SearchResultDetailViewModel(application: Application): AndroidViewModel(application) {
@@ -24,10 +25,10 @@ class SearchResultDetailViewModel(application: Application): AndroidViewModel(ap
     val repo = DorarDatabase.getInstance(application.applicationContext).let{
         LocalSearchRepository.getInstance(it)
     }
-    val categories: LiveData<List<BookmarkCategory>> = searchText.switchMap{ text ->
 
-        Log.d("SearchResultDetailViewModel", "current text: $text: ")
-        repo.searchCategory(text).asLiveData()
+    @ExperimentalCoroutinesApi
+    val categories: Flow<PagingData<BookmarkCategory>> = searchText.asFlow().flatMapLatest {
+        repo.searchCategory(it)
     }
 
 

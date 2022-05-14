@@ -82,12 +82,12 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         }
     }
 
-    override fun searchCategory(text: String?): Flow<List<BookmarkCategory>> {
+    override fun searchCategory(text: String?): Flow<PagingData<BookmarkCategory>> {
         val query = text?.let { "%$it%" }
         return bookmarkDao.searchCategory(query).toBookmarkCategory()
     }
 
-    override fun getAllCategories(): Flow<List<BookmarkCategory>> {
+    override fun getAllCategories(): Flow<PagingData<BookmarkCategory>> {
         return bookmarkDao.getAllCategories().toBookmarkCategory()
     }
 
@@ -108,12 +108,29 @@ class LocalSearchRepository(database: DorarDatabase) : SearchRepositoryInterface
         return bookmarkDao.searchCategorySync("%$constraint%").toBookmarkCategory()
     }
 
-    override fun getCategoriesWithHadith(): Flow<List<BookmarkCategory>> {
-        return bookmarkDao.getCategories().toBookmarkCategory()
+    override fun getCategoriesWithHadith(): Flow<PagingData<BookmarkCategory>> {
+        return Pager(
+            PagingConfig(10),
+        ) {
+            bookmarkDao.getCategories()
+        }.flow.map { pagingData ->
+            pagingData.map {
+                BookmarkCategory(it.id, it.title)
+            }
+        }
     }
 
-    override fun categoryHadithList(id: Long): Flow<List<HadithBookmarkUI>> {
-        return bookmarkDao.getHadithList(id).toHadithBookmarkList()
+    override fun categoryHadithList(id: Long): Flow<PagingData<HadithBookmarkUI>> {
+        return Pager(
+            PagingConfig(10)
+        ) {
+            bookmarkDao.getHadithList(id)
+        }.flow.map { pagingData ->
+            pagingData.map{
+                val hadithBookmark = it.toHadithBookmarkEntity()
+                HadithBookmarkUI(hadithBookmark)
+            }
+        }
     }
 
     override suspend fun updateBookmark(category: BookmarkCategory) {

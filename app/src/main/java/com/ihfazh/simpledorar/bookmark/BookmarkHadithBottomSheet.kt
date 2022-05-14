@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -19,6 +20,8 @@ import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.BottomSheetBookmarkHadithBinding
 import com.ihfazh.simpledorar.search.ResultItem
 import com.ihfazh.simpledorar.search.SearchResultDetailViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class BookmarkHadithBottomSheet(private val item: ResultItem): BottomSheetDialogFragment() {
     private var binding: BottomSheetBookmarkHadithBinding? = null
@@ -36,7 +39,7 @@ class BookmarkHadithBottomSheet(private val item: ResultItem): BottomSheetDialog
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bookmarkAdapter = BookmarkAddToCategoryAdapter().apply {
+        val bookmarkAdapter = BookmarkAddToCategoryAdapter(BookmarkAddToCategoryAdapter.ChangeCallback).apply {
             onItemClick = {
                 viewModel.setSelectedBookmark(it)
                 viewModel.saveHadith(item)
@@ -56,9 +59,11 @@ class BookmarkHadithBottomSheet(private val item: ResultItem): BottomSheetDialog
             }
         }
 
-        viewModel.categories.observe(viewLifecycleOwner){
-            Log.d(TAG, "onCreateView: list bookmark category $it")
-            bookmarkAdapter.setItems(it)
+
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewModel.categories.collectLatest {pagingData ->
+                bookmarkAdapter.submitData(pagingData)
+            }
         }
         return binding?.root
     }

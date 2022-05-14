@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavAction
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigator
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ihfazh.simpledorar.NavGraphDirections
 import com.ihfazh.simpledorar.databinding.FragmentBookmarkListBinding
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,7 +57,7 @@ class BookmarkListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val sharedPoolRv = RecyclerView.RecycledViewPool()
 
-        val adapter = BookmarkAdapter().apply {
+        val adapter = BookmarkAdapter(BookmarkAdapter.BookmarkCallback).apply {
             onItemClick = { it, view ->
                 val action = NavGraphDirections.goToBookmarkDetail(it.title, it.id)
                 val extras =  FragmentNavigatorExtras(
@@ -77,8 +80,11 @@ class BookmarkListFragment : Fragment() {
             bookmarkList.setItemViewCacheSize(20)
         }
 
-        viewModel.bookmarks.observe(viewLifecycleOwner){
-            adapter.submitList(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewModel.bookmarks.collectLatest{
+                adapter.submitData(it)
+            }
         }
     }
 

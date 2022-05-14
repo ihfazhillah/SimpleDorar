@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -13,6 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.FragmentBookmarkDetailBinding
 import com.ihfazh.simpledorar.note.NoteBottomSheet
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +34,7 @@ class BookmarkDetailFragment : Fragment() {
     private var binding : FragmentBookmarkDetailBinding? = null
     private val viewModel by activityViewModels<BookmarkDetailViewModel>()
     private val args by navArgs<BookmarkDetailFragmentArgs>()
-    private val hadithAdapter  = HadithAdapter().apply {
+    private val hadithAdapter  = HadithAdapter(HadithAdapter.HadithCallback).apply {
         onRemoveClick = {
             viewModel.deleteHadith(it)
         }
@@ -90,12 +93,16 @@ class BookmarkDetailFragment : Fragment() {
             viewModel.toggleExpandedHadithList(it.id)
         }
 
-        viewModel.getHadithList(args.id).observe(viewLifecycleOwner){
-            hadithAdapter.submitList(it)
-            (view.parent as? ViewGroup)?.doOnPreDraw {
-                startPostponedEnterTransition()
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewModel.getHadithList(args.id).collectLatest {
+                hadithAdapter.submitData(it)
             }
         }
+
+        (view.parent as? ViewGroup)?.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
+
     }
 
 

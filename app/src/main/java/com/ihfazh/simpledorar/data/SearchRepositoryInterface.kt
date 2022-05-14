@@ -18,14 +18,14 @@ interface SearchRepositoryInterface {
     suspend fun search(query: String, page: Int = 0): DorarResponse
 
     // BOOKMARK feature
-    fun searchCategory(text: String?): Flow<List<BookmarkCategory>>
-    fun getAllCategories(): Flow<List<BookmarkCategory>>
+    fun searchCategory(text: String?): Flow<PagingData<BookmarkCategory>>
+    fun getAllCategories(): Flow<PagingData<BookmarkCategory>>
     suspend fun inputCategory(text: String): Long
     suspend fun saveHadith(hadithBookmark: HadithBookmark)
     suspend fun deleteBookmarkHadith(hadithBookmark: HadithBookmark)
     fun searchCategorySync(constraint: CharSequence): List<BookmarkCategory>
-    fun getCategoriesWithHadith(): Flow<List<BookmarkCategory>>
-    fun categoryHadithList(id: Long): Flow<List<HadithBookmarkUI>>
+    fun getCategoriesWithHadith(): Flow<PagingData<BookmarkCategory>>
+    fun categoryHadithList(id: Long): Flow<PagingData<HadithBookmarkUI>>
     suspend fun updateBookmark(category: BookmarkCategory)
     suspend fun deleteBookmark(category: BookmarkCategory)
 

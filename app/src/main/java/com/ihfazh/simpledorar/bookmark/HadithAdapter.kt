@@ -5,14 +5,15 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ihfazh.simpledorar.R
 import com.ihfazh.simpledorar.databinding.ItemCategoryHadithBinding
 import com.ihfazh.simpledorar.utils.HadithUIHelper
 
-class HadithAdapter: RecyclerView.Adapter<HadithAdapter.ViewHolder>() {
-    private val items = mutableListOf<HadithBookmarkUI>()
+class HadithAdapter(diffCallback: DiffUtil.ItemCallback<HadithBookmarkUI>):
+    PagingDataAdapter<HadithBookmarkUI, HadithAdapter.ViewHolder>(diffCallback) {
     var onClick : (HadithBookmarkUI) -> Unit = {}
     var onRemoveClick: (HadithBookmarkUI) -> Unit = {}
 
@@ -25,22 +26,11 @@ class HadithAdapter: RecyclerView.Adapter<HadithAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        items[position].let{ item ->
+        getItem(position)?.let{ item ->
             holder.bind(item, onRootClick = onClick, onRemoveClick = onRemoveClick)
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    fun submitList(newItems: List<HadithBookmarkUI>){
-        val callback = HadithCallback(this.items, newItems)
-        val callbackResult = DiffUtil.calculateDiff(callback)
-        items.clear()
-        items.addAll(newItems)
-        callbackResult.dispatchUpdatesTo(this)
-    }
 
     class ViewHolder(val binding: ItemCategoryHadithBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(hadith: HadithBookmarkUI, onRootClick: (HadithBookmarkUI) -> Unit, onRemoveClick: (HadithBookmarkUI) -> Unit) {
@@ -88,26 +78,22 @@ class HadithAdapter: RecyclerView.Adapter<HadithAdapter.ViewHolder>() {
 
     }
 
-    inner class HadithCallback(val oldList: List<HadithBookmarkUI>, val newList: List<HadithBookmarkUI>):
-        DiffUtil.Callback(){
-        override fun getOldListSize(): Int {
-            return oldList.size
+    object HadithCallback: DiffUtil.ItemCallback<HadithBookmarkUI>(){
+        override fun areContentsTheSame(
+            oldItem: HadithBookmarkUI,
+            newItem: HadithBookmarkUI
+        ): Boolean {
+            return oldItem.hadithBookmark.id == newItem.hadithBookmark.id
         }
 
-        override fun getNewListSize(): Int {
-            return newList.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val old = oldList[oldItemPosition]
-            val new = newList[newItemPosition]
-            return old == new
+        override fun areItemsTheSame(
+            oldItem: HadithBookmarkUI,
+            newItem: HadithBookmarkUI
+        ): Boolean {
+            return oldItem == newItem
         }
     }
+
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         onRemoveClick = {}
