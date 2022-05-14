@@ -122,11 +122,14 @@ class SearchFragment : Fragment() {
 
             searchQueryRVAdapter.addLoadStateListener { loadState ->
                 if (loadState.append.endOfPaginationReached){
-                    if (searchQueryRVAdapter.itemCount < 1){
-                        viewModel.searchState.postValue(SearchState.NoHistory)
-                    } else {
-                        viewModel.searchState.postValue(SearchState.HasHistory)
-                    }
+                    // prevent pindah state ketika sedang melakukan pencarian
+                        if (!(viewModel.searchState.value == SearchState.SearchResult || viewModel.searchState.value == SearchState.NoSearchResult)){
+                            if (searchQueryRVAdapter.itemCount < 1){
+                                viewModel.searchState.postValue(SearchState.NoHistory)
+                            } else {
+                                viewModel.searchState.postValue(SearchState.HasHistory)
+                            }
+                        }
                 }
             }
         }
