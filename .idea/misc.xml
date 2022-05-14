@@ -21,9 +21,12 @@
         <entry key="app/src/main/res/layout/fragment_bookmark_detail.xml" value="0.34791666666666665" />
         <entry key="app/src/main/res/layout/fragment_bookmark_list.xml" value="0.34791666666666665" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.3572916666666667" />
+        <entry key="app/src/main/res/layout/fragment_info.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3572916666666667" />
         <entry key="app/src/main/res/layout/fragment_search_result_detail.xml" value="0.33229166666666665" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_simple_webview.xml" value="0.17760416666666667" />
+        <entry key="app/src/main/res/layout/general_item_list.xml" value="0.3515625" />
         <entry key="app/src/main/res/layout/item_add_to_category.xml" value="0.3515625" />
         <entry key="app/src/main/res/layout/item_category_bookmark.xml" value="0.2614322691975841" />
         <entry key="app/src/main/res/layout/item_category_hadith.xml" value="0.33" />

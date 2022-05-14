@@ -19,6 +19,11 @@
         <argument android:name="id" app:argType="long"/>
     </action>
 
+    <action
+        android:id="@+id/goToLicense"
+        app:destination="@id/webview"
+        />
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.ihfazh.simpledorar.search.SearchFragment"
@@ -53,6 +58,20 @@
         <argument android:name="id" app:argType="long"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.ihfazh.simpledorar.InfoFragment"
+        tools:layout="@layout/fragment_info"
+        android:label="Info"
+        />
+
+    <fragment
+        android:id="@+id/webview"
+        android:name="com.ihfazh.simpledorar.SimpleWebviewFragment"
+        tools:layout="@layout/fragment_simple_webview"
+        android:label="Info"
+        />
 
 
 </navigation>

@@ -12,4 +12,9 @@
         android:title="@string/bookmark"
         android:id="@+id/bookmarkFragment"
         />
+    <item
+        android:id="@+id/infoFragment"
+        android:title="@string/info"
+        android:icon="@drawable/ic_baseline_info_24"
+        />
 </menu>

@@ -141,7 +141,9 @@ class SearchFragment : Fragment() {
         }
 
         viewModel.message.observe(viewLifecycleOwner){
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            if (it.isNotEmpty()){
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
